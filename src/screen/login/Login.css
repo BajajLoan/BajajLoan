@@ -1,0 +1,180 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #eaf2fb;
+  min-height: 100vh;
+}
+
+/* ===== CENTER CONTAINER ===== */
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 380px;
+  padding: 32px 28px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+/* ===== HEADING ===== */
+.card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1f3cff;
+  margin-bottom: 22px;
+}
+
+/* ===== INPUT ===== */
+input {
+  width: 100%;
+  padding: 13px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #cfd6e0;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  border-color: #2c5df4;
+  box-shadow: 0 0 0 2px rgba(44, 93, 244, 0.15);
+}
+
+/* ===== BUTTONS ===== */
+.primary {
+  width: 100%;
+  padding: 13px;
+  margin-top: 16px;
+  background: #2c5df4;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.primary:hover {
+  background: #244edb;
+}
+
+.primary:active {
+  transform: scale(0.98);
+}
+
+.outline {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  background: transparent;
+  color: #2c5df4;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1.5px solid #2c5df4;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ===== TEXT ===== */
+.text {
+  margin: 18px 0 6px;
+  font-size: 14px;
+  color: #555;
+}
+
+.link {
+  margin-top: 14px;
+  background: none;
+  border: none;
+  color: #2c5df4;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ===== OTP SECTION ===== */
+.otp-text {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 14px;
+}
+
+.otp-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 18px 0 10px;
+}
+
+.otp-box input {
+  width: 46px;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid #cfd6e0;
+}
+
+/* ===== MOBILE (<= 480px) ===== */
+@media (max-width: 480px) {
+  .card {
+    padding: 26px 20px;
+    border-radius: 14px;
+  }
+
+  .card h2 {
+    font-size: 20px;
+  }
+
+  .otp-box input {
+    width: 42px;
+    height: 46px;
+    font-size: 18px;
+  }
+}
+
+/* ===== TABLET (481px - 768px) ===== */
+@media (min-width: 481px) and (max-width: 768px) {
+  .card {
+    max-width: 420px;
+    padding: 36px 32px;
+  }
+
+  .card h2 {
+    font-size: 24px;
+  }
+}
+
+/* ===== LAPTOP (769px - 1200px) ===== */
+@media (min-width: 769px) {
+  .card {
+    max-width: 400px;
+  }
+}
+
+/* ===== LARGE SCREENS (>= 1400px) ===== */
+@media (min-width: 1400px) {
+  .card {
+    max-width: 420px;
+    padding: 40px 36px;
+  }
+
+  .card h2 {
+    font-size: 26px;
+  }
+}
