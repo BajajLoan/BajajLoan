@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Apply.css";
+// import "./Apply.css";
 
 export default function Apply () {
   const [step, setStep] = useState(1);
