@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 const NavBar = ()=>{
+  const navigation = useNavigate();
     const [showSideMenu ,setShowSideMenu]=useState(false)
     return (
         <>
@@ -24,10 +25,10 @@ const NavBar = ()=>{
                 <button className="focus:outline-none">
                   {/* {user && <FaBell className="text-xl sm:text-2xl" />} */}
                 </button>
-                <button  className="focus:outline-none">
+                <button onClick={()=>navigation("/dashboard")}  className="focus:outline-none">
                   <FaRegUser className="text-xl sm:text-2xl" />
                 </button>
-               <button onClick={()=>setShowSideMenu(true)}>
+               <button onClick={()=>navigation("/previewPage")}>
                 <MdMenu/>
                </button>
               </>
