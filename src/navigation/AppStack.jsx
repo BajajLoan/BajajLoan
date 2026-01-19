@@ -10,6 +10,8 @@ import Education from "../screen/education/Education"
 import Homepage from "../screen/home/Homepage"
 import ProtectedRoute from "../component/ProtectedRoute"
 import Login from "../screen/login/Login"
+import UserDashboard from "../screen/dasboard/UserDashboard"
+import ApplicationPreview from "../screen/previewPage/ApplicationPreview"
 
 const AppStack = ()=>{
     return ( 
@@ -25,6 +27,8 @@ const AppStack = ()=>{
            <Route path="/education-loan" element={<Education/>}/>
            <Route path="/home-loan" element={<Homepage/>}/>
            <Route path="/login" element={<Login/>}/>
+           <Route path="/dashboard" element={<UserDashboard/>}/>
+           <Route path="/previewPage" element={<ApplicationPreview/>}/>
        </Routes>
        </Router>
    
