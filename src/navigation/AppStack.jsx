@@ -12,7 +12,7 @@ import ProtectedRoute from "../component/ProtectedRoute"
 import Login from "../screen/login/Login"
 import UserDashboard from "../screen/dasboard/UserDashboard"
 import ApplicationPreview from "../screen/previewPage/ApplicationPreview"
-// import Login from "../screen/login"
+import SupportPage from "../component/SupportPage"
 const AppStack = ()=>{
     return ( 
         <>
@@ -30,7 +30,7 @@ const AppStack = ()=>{
            <Route path="/login" element={<Login/>}/>
            <Route path="/dashboard" element={<UserDashboard/>}/>
            <Route path="/previewPage" element={<ApplicationPreview/>}/>
-           {/* <Route path="/login" element={<Login/>} */}
+           <Route path="/Contact" element={<SupportPage/>}/>
        </Routes>
     {/* //    </Router> */}
     </>

@@ -12,6 +12,7 @@ const Personal = () => {
   const [loanAmount, setLoanAmount] = useState("");
   const [tenure, setTenure] = useState(96);
   const interestRate = 5;
+  const [emiamount,setEmiAmount]=useState("")
   const [showAllTenures, setShowAllTenures] = useState(false);
 
   const navigate = useNavigate();
@@ -166,7 +167,8 @@ const Personal = () => {
       state: {
         loanName: "personal",
         loanAmount,
-        tenure
+        tenure,
+        emi
       }
     })
   }

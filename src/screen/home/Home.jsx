@@ -80,6 +80,74 @@ const Home =()=>{
 
           <div className="mt-6 text-center">
           </div>
+          {/* Pre-approved offers */}
+<section className="bg-white py-8 px-4 sm:px-6 lg:px-8">
+  <div className="max-w-7xl mx-auto">
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-xl font-semibold text-gray-800">
+        Pre-approved offers
+      </h2>
+      <span className="text-orange-500 font-medium cursor-pointer">
+        View all
+      </span>
+    </div>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      
+      {/* Card 1 */}
+      <div className="bg-[#7a4500] text-white rounded-lg p-4 flex flex-col justify-between">
+        <div>
+          <h3 className="font-semibold text-lg">Loan Advice? Contact Us.</h3>
+          <p className="text-sm mt-2">Get started in</p>
+          <p className="text-2xl font-bold">2 Minutes</p>
+          <p className="text-xs mt-2">Quick loan guidance</p>
+        </div>
+        <p className="text-sm mt-4">Call us at: 7757000000</p>
+      </div>
+
+      {/* Card 2 */}
+      <div className="bg-[#003f5c] text-white rounded-lg p-4">
+        <h3 className="font-semibold text-lg">Personal Loan</h3>
+        <p className="text-sm mt-2">Up to</p>
+        <p className="text-2xl font-bold">₹55 L</p>
+        <span className="inline-block bg-green-600 text-xs px-2 py-1 rounded mt-2">
+          Minimal Documentation
+        </span>
+        <button className="mt-4 bg-white text-black px-4 py-1 rounded font-semibold">
+          APPLY NOW
+        </button>
+      </div>
+
+      {/* Card 3 */}
+      <div className="bg-[#004b5f] text-white rounded-lg p-4">
+        <h3 className="font-semibold text-lg">Voltas ACs</h3>
+        <p className="text-sm mt-2">EMIs from</p>
+        <p className="text-2xl font-bold">₹1888*</p>
+        <span className="inline-block bg-green-600 text-xs px-2 py-1 rounded mt-2">
+          ₹0 Down Payment
+        </span>
+        <button className="mt-4 bg-white text-black px-4 py-1 rounded font-semibold">
+          EXPLORE NOW
+        </button>
+      </div>
+
+      {/* Card 4 */}
+      <div className="bg-[#003b44] text-white rounded-lg p-4">
+        <h3 className="font-semibold text-lg">Mutual Funds</h3>
+        <p className="text-sm mt-2">Start investing with just</p>
+        <p className="text-2xl font-bold">₹100</p>
+        <span className="inline-block bg-green-600 text-xs px-2 py-1 rounded mt-2">
+          SIP or Lumpsum
+        </span>
+        <button className="mt-4 bg-white text-black px-4 py-1 rounded font-semibold">
+          OPEN ACCOUNT
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
         </div>
         </section>
         <PopularCalculators/>

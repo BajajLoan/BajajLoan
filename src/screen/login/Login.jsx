@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useAuth } from "../../navigation/AuthContext";
 import { showSuccess, showError } from "../../services/utils/toastUtil";
-
+import { DiAndroid } from "react-icons/di";
+import { FaApple } from "react-icons/fa";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -11,100 +12,137 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const otpRef = useRef([]);
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const { sendOtp, verifyOtp, showOtp, setShowOtp } = useAuth();
 
   const handleOtpChange = (e, i) => {
-    const value = e.target.value;
-    if (!/^[0-9]?$/.test(value)) return;
+    const val = e.target.value;
+    if (!/^[0-9]?$/.test(val)) return;
 
     const newOtp = [...otp];
-    newOtp[i] = value;
+    newOtp[i] = val;
     setOtp(newOtp);
 
-    if (value && i < 5) {
-      otpRef.current[i + 1].focus();
-    }
+    if (val && i < 5) otpRef.current[i + 1].focus();
   };
 
-  // SEND OTP
   const handleSendOtp = async () => {
     try {
       setLoading(true);
       const res = await sendOtp(email);
-      // alert(res.message);
-      showSuccess(res.message)
-    } catch (err) {
-      // alert(err.response?.data?.message || "Error sending OTP");
-      showError("Unable to send otp")
+      showSuccess(res.message);
+    } catch {
+      showError("Unable to send OTP");
     } finally {
       setLoading(false);
     }
   };
 
-  // VERIFY OTP
   const handleVerifyOtp = async () => {
     try {
       setLoading(true);
-      const enteredOtp = otp.join("");
-      await verifyOtp(email, enteredOtp);
-
-      // alert("Login Success ✅");
-      showSuccess("Login Successfully")
-      // optional but safe
-      navigation("/", { replace: true });
-
-    } catch (err) {
-      // alert(err.response?.data?.message || "Invalid OTP");
-      showError("Invalid OTP")
+      await verifyOtp(email, otp.join(""));
+      showSuccess("Login successful");
+      navigate("/", { replace: true });
+    } catch {
+      showError("Invalid OTP");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <div className="card">
-        <h2>Email Login</h2>
+    <div className="bajaj-login">
+      {/* LEFT LOGIN CARD */}
+      <div className="login-left">
+        <div className="login-card">
+          <h2>Sign-in to Bajaj Finserv</h2>
 
-        {!showOtp ? (
-          <>
-            <input
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          {/* <div className="account-tabs">
+            <span className="active">Individual</span>
+            <span>Corporate/Business</span>
+            <span>NRI</span>
+            <span className="help">Help?</span>
+          </div> */}
 
-            <button className="primary" onClick={handleSendOtp} disabled={loading}>
-              {loading ? "Sending..." : "Send OTP"}
-            </button>
-          </>
-        ) : (
-          <>
-            <p className="otp-text">Enter OTP sent to {email}</p>
+          {!showOtp ? (
+            <>
+              <label>Email</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <small>An OTP will be sent to this email for verification</small>
 
-            <div className="otp-box">
-              {otp.map((_, i) => (
-                <input
-                  key={i}
-                  maxLength="1"
-                  ref={(el) => (otpRef.current[i] = el)}
-                  onChange={(e) => handleOtpChange(e, i)}
-                />
-              ))}
+              <button onClick={handleSendOtp} disabled={loading}>
+                {loading ? "SENDING..." : "GET OTP"}
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="otp-info">Enter OTP sent to {email}</p>
+
+              <div className="otp-box">
+                {otp.map((_, i) => (
+                  <input
+                    key={i}
+                    maxLength="1"
+                    ref={(el) => (otpRef.current[i] = el)}
+                    onChange={(e) => handleOtpChange(e, i)}
+                  />
+                ))}
+              </div>
+
+              <button onClick={handleVerifyOtp} disabled={loading}>
+                {loading ? "VERIFYING..." : "VERIFY OTP"}
+              </button>
+            </>
+          )}
+
+          <p className="footer-text">
+            Basic details of your relationship(s) including our group companies
+            are displayed on this page.
+          </p>
+        </div>
+      </div>
+
+      {/* RIGHT INFO SECTION */}
+      <div className="login-right">
+        <h1>Welcome!</h1>
+        <p>
+          Access and manage all your Bajaj Finserv services in one place. Sign in
+          to view your account details, track loans and EMIs, explore
+          personalised offers, download documents, and much more.
+        </p>
+
+        <div className="app-section">
+          {/* <img src="/qr.png" alt="QR" className="qr" /> */}
+          <div>
+            <p className="app-text">
+              Download our app for a personalised experience
+            </p>
+            <div className="store-icons">
+              <DiAndroid color="black" size={24}/>
+              {/* <h1>Android</h1> */}
+              <FaApple color="black" size={24}/>
+              {/* <h1>Ios</h1> */}
             </div>
+          </div>
+        </div>
 
-            <button className="primary" onClick={handleVerifyOtp} disabled={loading}>
-              {loading ? "Verifying..." : "Verify OTP"}
-            </button>
-
-            <button className="link" onClick={() => setShowOtp(false)}>
-              Change Email
-            </button>
-          </>
-        )}
+        <div className="ratings">
+          <div>
+            <strong>4.9 ★</strong>
+            <span>ANDROID</span>
+          </div>
+          <div>
+            <strong>4.7 ★</strong>
+            <span>iOS</span>
+          </div>
+        </div>
       </div>
     </div>
   );
