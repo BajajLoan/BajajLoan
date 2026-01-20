@@ -1,16 +1,20 @@
 import { useRef, useState } from "react";
-// import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useAuth } from "../../navigation/AuthContext";
+import { showSuccess, showError } from "../../services/utils/toastUtil";
+
 
 export default function Login() {
-  // const [showOtp, setShowOtp] = useState(false);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
+
   const otpRef = useRef([]);
-  const {sendOtp,verifyOtp,showOtp,setShowOtp}=useAuth();
-  console.log(showOtp)
+  const navigation = useNavigate();
+
+  const { sendOtp, verifyOtp, showOtp, setShowOtp } = useAuth();
+
   const handleOtpChange = (e, i) => {
     const value = e.target.value;
     if (!/^[0-9]?$/.test(value)) return;
@@ -24,35 +28,40 @@ export default function Login() {
     }
   };
 
-  // 🔹 SEND OTP
+  // SEND OTP
   const handleSendOtp = async () => {
-  try {
-    setLoading(true);
-    const res = await sendOtp(email);
-    alert(res.message);
-    setShowOtp(true);
-  } catch (err) {
-    alert(err.response?.data?.message || "Error sending OTP");
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      setLoading(true);
+      const res = await sendOtp(email);
+      // alert(res.message);
+      showSuccess(res.message)
+    } catch (err) {
+      // alert(err.response?.data?.message || "Error sending OTP");
+      showError("Unable to send otp")
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // VERIFY OTP
+  const handleVerifyOtp = async () => {
+    try {
+      setLoading(true);
+      const enteredOtp = otp.join("");
+      await verifyOtp(email, enteredOtp);
 
-//verify-otp
-const handleVerifyOtp = async () => {
-  try {
-    setLoading(true);
-    const enteredOtp = otp.join("");
-    await verifyOtp(email, enteredOtp);
-    alert("Login Success ✅");
-  } catch (err) {
-    alert(err.response?.data?.message || "Invalid OTP");
-  } finally {
-    setLoading(false);
-  }
-};
+      // alert("Login Success ✅");
+      showSuccess("Login Successfully")
+      // optional but safe
+      navigation("/", { replace: true });
 
+    } catch (err) {
+      // alert(err.response?.data?.message || "Invalid OTP");
+      showError("Invalid OTP")
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container">
@@ -68,7 +77,7 @@ const handleVerifyOtp = async () => {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <button className="primary" onClick={()=>{sendOtp(email)}} disabled={loading}>
+            <button className="primary" onClick={handleSendOtp} disabled={loading}>
               {loading ? "Sending..." : "Send OTP"}
             </button>
           </>
@@ -87,7 +96,7 @@ const handleVerifyOtp = async () => {
               ))}
             </div>
 
-            <button className="primary" onClick={()=>{verifyOtp(email, otp);}} disabled={loading}>
+            <button className="primary" onClick={handleVerifyOtp} disabled={loading}>
               {loading ? "Verifying..." : "Verify OTP"}
             </button>
 

@@ -1,8 +1,10 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../../navigation/AuthContext";
 
 export default function UserDashboard() {
   const { id } = useParams();
+  const {setToken}=useAuth();
   const navigate = useNavigate();
 
   const application = {
@@ -98,10 +100,9 @@ export default function UserDashboard() {
         {/* LOGOUT */}
         <div className="flex justify-center">
           <button
-            onClick={() => {
-              localStorage.clear();
-              navigate("/login");
-            }}
+            onClick={
+              {}
+            }
             className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition"
           >
             Logout

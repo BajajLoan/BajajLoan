@@ -8,7 +8,7 @@ import BusinessLoanEMICalculator from "../../emiCalculator/BusinessLoanEMICalcul
 import Bussiness from "../../assets/Bussiness.png";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Disclaimer from "../../component/Disclaimer.jsx";
-import FAQSection from "../../Component/FAQSection.jsx";
+import FAQSection from "../../component/FAQSection.jsx";
 import BusinessLoanFeatures from "./BussinessLoanFeatures.jsx";
 
 const Business = () => {
@@ -50,22 +50,6 @@ const Business = () => {
   );
   const netAmount = safeLoanAmount;
 
-  const handleApplyClick = async () => {
-      navigate("/apply", {
-        state: {
-          loanName: "Business Loan",
-          loanAmount: safeLoanAmount,
-          tenure,
-          interestRate,
-          emi,
-          totalAmount,
-          interestAmount,
-          processingFee,
-          netAmount,
-        },
-      });
-    }
-    
   
 
   // const [openIndex, setOpenIndex] = useState(null);
@@ -176,7 +160,15 @@ const Business = () => {
                 Credited Amount: ₹{safeLoanAmount.toFixed(2)}
               </p>
               <button
-                onClick={handleApplyClick}
+                onClick={() =>
+    navigate("/apply", {
+      state: {
+        loanName: "business",
+        loanAmount,
+        tenure
+      }
+    })
+  }
                 className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded text-sm font-medium"
               >
                 APPLY NOW

@@ -12,13 +12,14 @@ import ProtectedRoute from "../component/ProtectedRoute"
 import Login from "../screen/login/Login"
 import UserDashboard from "../screen/dasboard/UserDashboard"
 import ApplicationPreview from "../screen/previewPage/ApplicationPreview"
-
+// import Login from "../screen/login"
 const AppStack = ()=>{
     return ( 
-        <Router>
+        <>
+        {/* // <Router> */}
             <NavBar/>
        <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
         <Route path="/personal" element={<Personal/>}/>
          <Route path="/calculator" element={<Calculator />} />
           <Route path="/viewAll" element={<ViewAll/>} /> 
@@ -29,8 +30,10 @@ const AppStack = ()=>{
            <Route path="/login" element={<Login/>}/>
            <Route path="/dashboard" element={<UserDashboard/>}/>
            <Route path="/previewPage" element={<ApplicationPreview/>}/>
+           {/* <Route path="/login" element={<Login/>} */}
        </Routes>
-       </Router>
+    {/* //    </Router> */}
+    </>
    
     )
 }

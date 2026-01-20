@@ -1,60 +1,45 @@
-import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { sendOtpApi, verifyOtpApi } from "../services/authApi";
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-     const [showOtp, setShowOtp] = useState(false);
-     const [token,setToken]=useState(null)
-  const sendOtp = async (email) => {
-    console.log(email,"email")
-    try {
-    //   setLoading(true);
-      const res = await axios.post("http://10.111.249.111:3000/api/auth/send-otp", {
-        email,
-      });
-    //   console.log(JSON.parse(resizeTo))
-      localStorage.setItem("token", res.data.token);
-      alert(res.data.message);
-       setToken(res.data.token)
-      setShowOtp(true);
-    } catch (err) {
-      alert(err.response?.data?.message || "Error sending OTP");
-    } finally {
-    //   setLoading(false);
+  const [showOtp, setShowOtp] = useState(false);
+  const [token, setToken] = useState(null);
+
+  // 🔥 AUTO LOGIN ON REFRESH
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
     }
+  }, []);
+
+  const sendOtp = async (email) => {
+    const res = await sendOtpApi(email);
+    setShowOtp(true);
+    return res;
   };
 
-  // 🔹 VERIFY OTP
   const verifyOtp = async (email, otp) => {
-    try {
-    //   setLoading(true);
-      const enteredOtp = otp.join("");
+    const res = await verifyOtpApi(email, otp);
+    localStorage.setItem("token", res.token);
+    setToken(res.token); // 🔥 THIS CAUSES APP RE-RENDER
+    return res;
+  };
 
-      const res = await axios.post(
-        "http://10.111.249.111:3000/api/auth/verify-otp",
-        {
-          email,
-          otp: enteredOtp,
-        }
-      );
-
-      alert("Login Success ✅");
-      localStorage.setItem("token", res.data.token);
-    //   console.log
-      setToken(res.data.token)
-    } catch (err) {
-      alert(err.response?.data?.message || "Invalid OTP");
-    } finally {
-    //   setLoading(false);
-    }
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ sendOtp, verifyOtp,token, showOtp,setShowOtp }}>
+    <AuthContext.Provider
+      value={{ sendOtp, verifyOtp, token, showOtp, setShowOtp, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-// custom hook
 export const useAuth = () => useContext(AuthContext);
