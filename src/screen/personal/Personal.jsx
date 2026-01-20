@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Personalimage from '../../assets/Personalimage.png';
 import PersonalLoanEMICalculaor from "../../emiCalculator/PersonalLoanEMICalculator";
 import PersonalLoanFeature from "./PersonalLoanFeature";
-import FAQSection from "../../Component/FAQSection";
+import FAQSection from "../../component/FAQSection";
 import Disclaimer from "../../component/Disclaimer";
 import Footer from "../../component/Footer";
 
@@ -161,7 +161,15 @@ const Personal = () => {
               </p>
 
               <button
-              onClick={()=>navigate("/apply")}
+              onClick={() =>
+    navigate("/apply", {
+      state: {
+        loanName: "personal",
+        loanAmount,
+        tenure
+      }
+    })
+  }
                 className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded font-medium"
               >
                 APPLY NOW
