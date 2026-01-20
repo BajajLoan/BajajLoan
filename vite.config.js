@@ -12,7 +12,10 @@ export default defineConfig({
         changeOrigin: true,
         secure: false
       }
-    }
+    },
+    allowedHosts: [
+      "bajajloan.onrender.com"
+    ]
   }
 })
 // export default {
