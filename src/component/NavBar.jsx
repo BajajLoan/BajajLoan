@@ -86,10 +86,10 @@ const NavBar = () => {
           </button>
 
           <button
-            onClick={() => { navigate("/history"); setShowSideMenu(false); }}
+            onClick={() => { navigate("/term&condition"); setShowSideMenu(false); }}
             className="flex items-center gap-3 py-2 hover:text-indigo-600"
           >
-            <History size={18} /> History
+            <History size={18} /> Term&Condition
           </button>
 
           <button

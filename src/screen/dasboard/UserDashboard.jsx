@@ -1,115 +1,99 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useAuth } from "../../navigation/AuthContext";
 
 export default function UserDashboard() {
-  const { id } = useParams();
-  const {setToken}=useAuth();
-  const navigate = useNavigate();
-
-  const application = {
-    email: "user@gmail.com",
-    loanType: { loanName: "Personal Loan", loanAmount: 200000, tenure: 24 },
-    personal: { name: "Praveen", mobile: "9999999999" },
-    bank: { bankName: "SBI", accountNo: "XXXX1234" },
-    documents: { aadhaar: "Uploaded", pan: "Uploaded" },
-    charges: [
-      {
-        _id: "1",
-        chargeType: "Processing Fee",
-        loanType: "personal",
-        amount: 1500,
-        approval: 1
-      }
-    ]
-  };
-
   return (
-    <div className="min-h-screen  p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-6 ml-4">
-        Dashboard
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50 flex justify-center px-4 py-8">
+      
+      <div className="w-full max-w-md md:max-w-3xl space-y-6">
 
-      <div className="max-w-4xl mx-auto space-y-6">
+        {/* AVAILABLE AMOUNT */}
+        <div className="bg-white rounded-3xl shadow p-6 text-center">
+          <p className="text-gray-500 text-sm">Available amount</p>
 
-        {/* PERSONAL INFO */}
-        <div className="bg-white p-5 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-3">Personal Information</h2>
-          <p><b>Email:</b> {application.email}</p>
-          {Object.entries(application.personal).map(([k, v]) => (
-            <p key={k}><b>{k}:</b> {v}</p>
-          ))}
-        </div>
+          <h1 className="text-3xl font-bold text-gray-900 mt-2">
+            ₹1,00,000
+            <span className="text-sm text-gray-400 font-normal">
+              {" "} / ₹1,00,000
+            </span>
+          </h1>
 
-        {/* DOCUMENTS */}
-        <div className="bg-white p-5 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-3">Documents</h2>
-          {Object.entries(application.documents).map(([k, v]) => (
-            <p key={k}><b>{k}:</b> {v}</p>
-          ))}
-        </div>
+          <div className="h-2 bg-gray-200 rounded-full mt-4">
+            <div className="h-2 bg-green-500 rounded-full w-full" />
+          </div>
 
-        {/* BANK DETAILS */}
-        <div className="bg-white p-5 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-3">Bank Details</h2>
-          {Object.entries(application.bank).map(([k, v]) => (
-            <p key={k}><b>{k}:</b> {v}</p>
-          ))}
-        </div>
+          <p className="flex justify-center items-center gap-2 text-sm text-gray-600 mt-4">
+            <span className="bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full text-xs">
+              ✔
+            </span>
+            Easy Withdrawals
+          </p>
 
-        {/* LOAN DETAILS */}
-        <div className="bg-white p-5 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-3">Loan Details</h2>
-          <p><b>Loan Name:</b> {application.loanType.loanName}</p>
-          <p><b>Amount:</b> ₹{application.loanType.loanAmount}</p>
-          <p><b>Tenure:</b> {application.loanType.tenure} months</p>
-        </div>
-
-        {/* CHARGES */}
-        <div className="bg-white p-5 rounded-xl shadow overflow-x-auto">
-          <h2 className="text-lg font-semibold mb-3">Charges</h2>
-
-          <table className="w-full min-w-[500px] border">
-            <thead className="bg-gray-200">
-              <tr>
-                <th className="p-2 text-left">Type</th>
-                <th className="text-left">Loan</th>
-                <th className="text-left">Amount</th>
-                <th className="text-left">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {application.charges.map(c => (
-                <tr key={c._id} className="border-t">
-                  <td className="p-2">{c.chargeType}</td>
-                  <td>{c.loanType}</td>
-                  <td>₹{c.amount}</td>
-                  <td
-                    className={`font-semibold ${
-                      c.approval ? "text-green-600" : "text-yellow-600"
-                    }`}
-                  >
-                    {c.approval ? "Approved" : "Pending"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* LOGOUT */}
-        <div className="flex justify-center">
-          <button
-            onClick={
-              {}
-            }
-            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition"
-          >
-            Logout
+          <button className="mt-5 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-full font-semibold transition">
+            Withdraw to Bank
           </button>
         </div>
 
+        {/* LOAN DETAILS */}
+        <Section title="Loan Details">
+          <Row label="Loan A/C Number" value="LM932875329" />
+          <Row
+            label="NBFC Partner"
+            value="Fullerton India Credit Company Ltd"
+          />
+          <Row label="Amount Disbursed" value="₹10,000" />
+          <Row label="Monthly Interest Rate" value="3% p.m." />
+        </Section>
+
+        {/* PERSONAL DETAILS */}
+        <Section title="Personal Details">
+          <Row label="Name" value="Praveen" />
+          <Row label="Email" value="user@gmail.com" />
+          <Row label="Mobile" value="9999999999" />
+        </Section>
+
+        {/* BANK DETAILS */}
+        <Section title="Bank Details">
+          <Row label="Bank Name" value="SBI" />
+          <Row label="Account No" value="XXXX1234" />
+          <Row label="IFSC" value="SBIN0000123" />
+        </Section>
+
+        {/* DOCUMENTS */}
+        <Section title="Documents">
+          <Row label="Aadhaar" value="Uploaded" success />
+          <Row label="PAN" value="Uploaded" success />
+          <Row label="Bank Statement" value="Uploaded" success />
+        </Section>
+
       </div>
+    </div>
+  );
+}
+
+/* SECTION CARD */
+function Section({ title, children }) {
+  return (
+    <div className="bg-white rounded-3xl shadow p-6">
+      <h2 className="text-sm font-semibold text-gray-500 mb-4 uppercase">
+        {title}
+      </h2>
+      <div className="space-y-3">{children}</div>
+    </div>
+  );
+}
+
+/* ROW */
+function Row({ label, value, success }) {
+  return (
+    <div className="flex justify-between items-center text-sm">
+      <span className="text-gray-500">{label}</span>
+      <span
+        className={`font-medium ${
+          success ? "text-green-600" : "text-gray-800"
+        }`}
+      >
+        {value}
+      </span>
     </div>
   );
 }

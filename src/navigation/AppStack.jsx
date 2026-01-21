@@ -13,6 +13,9 @@ import Login from "../screen/login/Login"
 import UserDashboard from "../screen/dasboard/UserDashboard"
 import ApplicationPreview from "../screen/previewPage/ApplicationPreview"
 import SupportPage from "../component/SupportPage"
+import UPIPayment from "../component/UPIPayment"
+import TermCondition from "../component/TermCondition"
+
 const AppStack = ()=>{
     return ( 
         <>
@@ -31,6 +34,8 @@ const AppStack = ()=>{
            <Route path="/dashboard" element={<UserDashboard/>}/>
            <Route path="/previewPage" element={<ApplicationPreview/>}/>
            <Route path="/Contact" element={<SupportPage/>}/>
+           <Route path="/payment" element={<UPIPayment/>}/>
+           <Route path="/term&condition" element={<TermCondition/>}/>
        </Routes>
     {/* //    </Router> */}
     </>
