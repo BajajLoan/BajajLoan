@@ -19,32 +19,46 @@ export default function Apply() {
   const [personal, setPersonal] = useState({});
   const [bank, setBank] = useState({});
   const [documents, setDocuments] = useState({});
+  const [aadhaarImage, setAadhaarImage] = useState(null);
+const [panImage, setPanImage] = useState(null);
+
 
   const handleSubmit = async () => {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const payload = {
-        loanType: { loanName, loanAmount, tenure },
-        personal,
-        bank,
-        documents,
-      };
+    const formData = new FormData();
 
-      await apiRequest("post", "/apply", payload);
+    formData.append(
+      "loanType",
+      JSON.stringify({ loanName, loanAmount, tenure })
+    );
+    formData.append("personal", JSON.stringify(personal));
+    formData.append("bank", JSON.stringify(bank));
+    formData.append("documents", JSON.stringify(documents));
 
-      showSuccess("Loan Application Submitted Successfully");
-      setShowPreview(true);
+    if (aadhaarImage) formData.append("aadhaar", aadhaarImage);
+    if (panImage) formData.append("pan", panImage);
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 3000);
-    } catch (err) {
-      showError("Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
-  };
+    await apiRequest("post", "/apply", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+
+    showSuccess("Loan Application Submitted Successfully");
+    setShowPreview(true);
+
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 3000);
+  } catch (err) {
+    showError("Something went wrong!");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   /* ================= PREVIEW SCREEN ================= */
   if (showPreview) {
@@ -234,7 +248,34 @@ export default function Apply() {
                       setDocuments({ ...documents, pan: e.target.value })
                     }
                   />
+
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+  <div>
+    <label className="text-sm text-gray-600 mb-1 block">
+      Aadhaar Image
+    </label>
+    <input
+      type="file"
+      accept="image/*"
+      className="input"
+      onChange={(e) => setAadhaarImage(e.target.files[0])}
+    />
+  </div>
+
+  <div>
+    <label className="text-sm text-gray-600 mb-1 block">
+      PAN Image
+    </label>
+    <input
+      type="file"
+      accept="image/*"
+      className="input"
+      onChange={(e) => setPanImage(e.target.files[0])}
+    />
+  </div>
+</div>
+
 
                 <div className="flex gap-3 mt-6">
                   <button className="btn-secondary w-full" onClick={() => setStep(2)}>Back</button>
