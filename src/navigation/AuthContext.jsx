@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
 
   const sendOtp = async (email) => {
     const res = await sendOtpApi(email);
+   localStorage.setItem("email",email)
     setShowOtp(true);
     return res;
   };

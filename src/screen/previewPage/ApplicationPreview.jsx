@@ -1,161 +1,165 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import {
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-} from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import apiRequest from "../../services/api/apiRequest";
+import { Calendar, IndianRupee, CheckCircle, FileText, XCircle } from "lucide-react";
 
-export default function ApplicationPreview() {
-  const { id } = useParams();
+export default function ApplicationsPreview() {
+  const [loading, setLoading] = useState(false);
+  const [applications, setApplications] = useState([]);
+  const [showAllEmi, setShowAllEmi] = useState(false);
 
-  const application = {
-    email: "user@gmail.com",
-    loanType: {
-      loanName: "Personal Loan",
-      loanAmount: 200000,
-      tenure: 24,
-    },
-    personal: {
-      name: "Praveen",
-      mobile: "9999999999",
-    },
-    bank: {
-      bankName: "SBI",
-      accountNo: "XXXX1234",
-    },
-    documents: {
-      aadhaar: "Uploaded",
-      pan: "Uploaded",
-    },
-  };
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        setLoading(true);
+        const res = await apiRequest("get", "/user-detail");
+        setApplications(res || []);
+      } catch (err) {
+        console.error(err);
+        setApplications([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const Field = ({ label, value }) => (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 py-3 border-b last:border-b-0">
-      <p className="text-sm font-medium text-gray-600">{label}</p>
-      <p className="sm:col-span-2 text-sm text-gray-900 break-words">
-        {value}
-      </p>
-    </div>
-  );
+    fetchApplications();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Loading your loans...</p>
+      </div>
+    );
+  }
+
+  if (!applications.length) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-indigo-100">
+        <div className="bg-white p-8 rounded-2xl shadow-xl text-center max-w-md">
+          <FileText size={48} className="mx-auto text-indigo-600 mb-4" />
+          <h2 className="text-xl font-bold text-indigo-700 mb-2">
+            No Active Loan
+          </h2>
+          <p className="text-gray-600 text-sm">
+            You have not applied for any loan yet.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 md:px-10">
-      <h1 className="text-xl sm:text-2xl font-bold text-center mb-6">
-        Loan Application Preview
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 px-4 py-10">
+      <div className="max-w-6xl mx-auto space-y-6">
+        <h1 className="text-2xl font-bold text-indigo-700">
+          My Loan Applications
+        </h1>
 
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-5 sm:p-6 md:p-8 space-y-8">
-
-        {/* 🔹 APPLICATION STEPS (ANGEL ONE STYLE) */}
-        <div className="overflow-x-auto">
-          <div className="flex items-center justify-between min-w-[600px] relative">
-            {[
-              { label: "Applied", status: "done" },
-              { label: "Documents Uploaded", status: "done" },
-              { label: "Under Review", status: "active" },
-              { label: "Approval", status: "pending" },
-              { label: "Disbursed", status: "pending" },
-            ].map((step, index) => (
-              <div key={index} className="flex-1 text-center relative">
-                
-                {/* Line */}
-                {index !== 0 && (
-                  <div className="absolute top-5 left-0 w-full h-0.5 bg-gray-300 -z-10"></div>
-                )}
-
-                {/* Icon */}
-                <div
-                  className={`mx-auto w-10 h-10 flex items-center justify-center rounded-full border-2
-                    ${
-                      step.status === "done"
-                        ? "bg-green-500 border-green-500 text-white"
-                        : step.status === "active"
-                        ? "bg-yellow-400 border-yellow-400 text-white"
-                        : "bg-white border-gray-300 text-gray-400"
-                    }`}
-                >
-                  {step.status === "done" ? (
-                    <CheckCircleIcon className="w-6 h-6" />
-                  ) : (
-                    <span className="font-semibold">{index + 1}</span>
-                  )}
-                </div>
-
-                {/* Text */}
-                <p
-                  className={`mt-2 text-xs sm:text-sm font-medium
-                    ${
-                      step.status === "active"
-                        ? "text-yellow-700"
-                        : step.status === "done"
-                        ? "text-green-600"
-                        : "text-gray-400"
-                    }`}
-                >
-                  {step.label}
+        {applications.map((app) => (
+          <div
+            key={app._id}
+            className="bg-white rounded-2xl shadow-xl p-6 space-y-6"
+          >
+            {/* LOAN SUMMARY */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p className="text-gray-500 text-sm">Loan Type</p>
+                <p className="font-semibold capitalize">
+                  {app.loanType?.loanName}
                 </p>
               </div>
-            ))}
-          </div>
+
+              <div>
+                <p className="text-gray-500 text-sm">Amount</p>
+                <p className="font-semibold flex items-center gap-1">
+                  <IndianRupee size={14} />
+                  {app.loanType?.loanAmount}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-500 text-sm">Tenure</p>
+                <p className="font-semibold">
+                  {app.loanType?.tenure} Months
+                </p>
+              </div>
+            </div>
+
+           {Array.isArray(app?.charges) && app?.charges.length > 0 && (
+  <div>
+    <h3 className="font-semibold text-indigo-600 mb-3">
+      Charges Paid
+    </h3>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {app.charges.map((charge, index) => (
+        <div
+          key={index}
+          className="border rounded-xl p-4 flex flex-col gap-1"
+        >
+          <p className="text-sm font-medium">{charge.chargeType}</p>
+
+          <p className="text-xs text-gray-500">
+            {app.loanType?.loanName}
+          </p>
+
+          <p className="text-sm font-semibold">₹{charge.amount}</p>
+
+          {charge.approval === 1 ? (
+            <span className="text-green-600 text-xs flex items-center gap-1">
+              Approved
+            </span>
+          ) : (
+            <span className="text-red-600 text-xs flex items-center gap-1">
+              Rejected
+            </span>
+          )}
         </div>
+      ))}
+    </div>
+  </div>
+)}
 
-        {/* 🔔 STATUS ALERT */}
-        <div className="flex items-start gap-3 bg-yellow-50 border border-yellow-300 text-yellow-800 px-4 py-3 rounded-lg">
-          <ExclamationTriangleIcon className="w-6 h-6 mt-0.5 flex-shrink-0" />
-          <div>
-            <p className="font-semibold text-sm sm:text-base">
-              Loan Application Under Review
-            </p>
-            <p className="text-xs sm:text-sm mt-1">
-              Your application is currently being reviewed. You will be notified
-              once verification is completed.
-            </p>
+
+            {/* EMI CALENDAR */}
+            <div>
+              <h3 className="font-semibold text-indigo-600 mb-3">
+                EMI Transactions
+              </h3>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                {Array.from({
+                  length: showAllEmi
+                    ? app.loanType?.tenure
+                    : Math.min(4, app.loanType?.tenure || 0),
+                }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="border rounded-lg p-3 text-center"
+                  >
+                    <Calendar
+                      size={16}
+                      className="mx-auto mb-1 text-indigo-600"
+                    />
+                    <p className="text-xs">Month {i + 1}</p>
+                    <p className="text-xs text-gray-500">Pending</p>
+                  </div>
+                ))}
+              </div>
+
+              {app.loanType?.tenure > 4 && !showAllEmi && (
+                <div className="mt-4 text-center">
+                  <button
+                    onClick={() => setShowAllEmi(true)}
+                    className="text-sm text-indigo-600 font-semibold hover:underline"
+                  >
+                    See All EMIs
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-
-        {/* PERSONAL DETAILS */}
-        <section>
-          <h2 className="text-base sm:text-lg font-semibold mb-4 border-b pb-2">
-            Personal Information
-          </h2>
-          <Field label="Email" value={application.email} />
-          <Field label="Full Name" value={application.personal.name} />
-          <Field label="Mobile Number" value={application.personal.mobile} />
-        </section>
-
-        {/* DOCUMENT DETAILS */}
-        <section>
-          <h2 className="text-base sm:text-lg font-semibold mb-4 border-b pb-2">
-            Documents
-          </h2>
-          <Field label="Aadhaar Status" value={application.documents.aadhaar} />
-          <Field label="PAN Status" value={application.documents.pan} />
-        </section>
-
-        {/* BANK DETAILS */}
-        <section>
-          <h2 className="text-base sm:text-lg font-semibold mb-4 border-b pb-2">
-            Bank Details
-          </h2>
-          <Field label="Bank Name" value={application.bank.bankName} />
-          <Field label="Account Number" value={application.bank.accountNo} />
-        </section>
-
-        {/* LOAN DETAILS */}
-        <section>
-          <h2 className="text-base sm:text-lg font-semibold mb-4 border-b pb-2">
-            Loan Details
-          </h2>
-          <Field label="Loan Type" value={application.loanType.loanName} />
-          <Field
-            label="Loan Amount"
-            value={`₹ ${application.loanType.loanAmount.toLocaleString()}`}
-          />
-          <Field
-            label="Tenure"
-            value={`${application.loanType.tenure} Months`}
-          />
-        </section>
+        ))}
       </div>
     </div>
   );

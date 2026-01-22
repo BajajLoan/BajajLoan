@@ -19,45 +19,105 @@ export default function Apply() {
   const [personal, setPersonal] = useState({});
   const [bank, setBank] = useState({});
   const [documents, setDocuments] = useState({});
-  const [aadhaarImage, setAadhaarImage] = useState(null);
-const [panImage, setPanImage] = useState(null);
+  const [aadhaarImageFile, setAadhaarImageFile] = useState(null);
+const [panImageFile, setPanImageFile] = useState(null);
+
+console.log(aadhaarImageFile)
+const validateStep1 = () => {
+  if (
+    !personal.firstName ||
+    !personal.lastName ||
+    !personal.dob ||
+    !personal.phone ||
+    !personal.email ||
+    !personal.address
+  ) {
+    showError("Please fill all Personal Details");
+    return false;
+  }
+  return true;
+};
+
+const validateStep2 = () => {
+  if (
+    !bank.holder ||
+    !bank.accountNo ||
+    !bank.ifsc ||
+    !bank.branch
+  ) {
+    showError("Please fill all Bank Details");
+    return false;
+  }
+  return true;
+};
+
+const validateStep3 = () => {
+  if (
+    !documents.aadhaar ||
+    !documents.pan 
+    // !aadhaarImage ||
+    // !panImage
+  ) {
+    showError("Please fill all Document Details");
+    return false;
+  }
+  return true;
+};
+
 
 
   const handleSubmit = async () => {
+  if (!validateStep3()) return;
+
   try {
     setLoading(true);
 
     const formData = new FormData();
 
-    formData.append(
-      "loanType",
-      JSON.stringify({ loanName, loanAmount, tenure })
-    );
-    formData.append("personal", JSON.stringify(personal));
-    formData.append("bank", JSON.stringify(bank));
-    formData.append("documents", JSON.stringify(documents));
+// BASIC
+formData.append("loanName", loanName);
+formData.append("loanAmount",loanAmount);
+formData.append("tenure",tenure);
+formData.append("emi",emi)
+formData.append("email", personal.email);
 
-    if (aadhaarImage) formData.append("aadhaar", aadhaarImage);
-    if (panImage) formData.append("pan", panImage);
+// PERSONAL
+formData.append("firstName", personal.firstName);
+formData.append("lastName", personal.lastName);
+formData.append("dob", personal.dob);
+formData.append("phone", personal.phone);
+formData.append("address", personal.address);
 
-    await apiRequest("post", "/apply", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    });
+// BANK
+formData.append("accountHolder", bank.holder);
+formData.append("accountNumber", bank.accountNo);
+formData.append("ifsc", bank.ifsc);
+
+// DOCUMENT NUMBERS
+formData.append("aadhaar", documents.aadhaar);
+formData.append("pan", documents.pan);
+
+// DOCUMENT IMAGES
+if (aadhaarImageFile) formData.append("aadhaarImage", aadhaarImageFile);
+if (panImageFile) formData.append("panImage", panImageFile);
+
+// API
+await apiRequest("post","/apply", formData);
+
 
     showSuccess("Loan Application Submitted Successfully");
     setShowPreview(true);
 
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 3000);
-  } catch (err) {
+    setTimeout(() => navigate("/dashboard"), 3000);
+  } catch (error) {
+    console.error(error);
     showError("Something went wrong!");
   } finally {
     setLoading(false);
   }
 };
+
+
 
 
   /* ================= PREVIEW SCREEN ================= */
@@ -164,35 +224,58 @@ const [panImage, setPanImage] = useState(null);
                   Personal Information
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input className="input" placeholder="First Name"
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex">
+                  <div>
+                    <label className="font-bold ml-2 ">First Name<label className="font-bold text-red-900">*</label></label>
+                  <input label="First Name" className="input" placeholder="First Name"
                     onChange={(e) =>
                       setPersonal({ ...personal, firstName: e.target.value })
                     }
                   />
-                  <input className="input" placeholder="Last Name"
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2 ">Last Name<label className="font-bold text-red-900">*</label></label>
+                    <input className="input" placeholder="Last Name"
                     onChange={(e) =>
                       setPersonal({ ...personal, lastName: e.target.value })
                     }
                   />
-                  <input className="input" type="date"
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2 ">Date of Birth<label className="font-bold text-red-900">*</label></label>
+                    <input className="input" type="date"
                     onChange={(e) =>
                       setPersonal({ ...personal, dob: e.target.value })
                     }
                   />
-                  <input className="input" placeholder="Phone Number"
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2 ">Phone Number<label className="font-bold text-red-900">*</label></label>
+                    <input className="input" placeholder="Phone Number"
                     onChange={(e) =>
                       setPersonal({ ...personal, phone: e.target.value })
                     }
                   />
-                  <input className="input md:col-span-2" placeholder="Email Address"
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2 ">Email<label className="font-bold text-red-900">*</label></label>
+                    <input className="input md:col-span-2" placeholder="Email Address"
                     onChange={(e) =>
                       setPersonal({ ...personal, email: e.target.value })
                     }
                   />
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2 ">Address<label className="font-bold text-red-900">*</label></label>
+                    <input className="input" placeholder="Address"
+                    onChange={(e) =>
+                      setPersonal({ ...personal, address: e.target.value })
+                    }
+                  />
+                  </div>
                 </div>
 
-                <button onClick={() => setStep(2)} className="btn-primary mt-6 w-full">
+                <button onClick={() => validateStep1() && setStep(2)} className="btn-primary mt-6 w-full">
                   Continue →
                 </button>
               </>
@@ -206,26 +289,43 @@ const [panImage, setPanImage] = useState(null);
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="font-bold ml-2 ">Account Holder Name<label className="font-bold text-red-900">*</label></label>
                   <input className="input" placeholder="Account Holder Name"
                     onChange={(e) =>
                       setBank({ ...bank, holder: e.target.value })
                     }
                   />
-                  <input className="input" placeholder="Account Number"
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2">Account Number<label className="font-bold text-red-900">*</label></label>
+                    <input className="input" placeholder="Account Number"
                     onChange={(e) =>
                       setBank({ ...bank, accountNo: e.target.value })
                     }
                   />
-                  <input className="input md:col-span-2" placeholder="IFSC Code"
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2">IFSC Code<label className="font-bold text-red-900">*</label></label>
+                    <input className="input md:col-span-2" placeholder="IFSC Code"
                     onChange={(e) =>
                       setBank({ ...bank, ifsc: e.target.value })
                     }
                   />
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2">Branch<label className="font-bold text-red-900">*</label></label>
+                    <input className="input md:col-span-2" placeholder="Branch"
+                    onChange={(e) =>
+                      setBank({ ...bank, branch: e.target.value })
+                    }
+                  />
+                  </div>
                 </div>
 
                 <div className="flex gap-3 mt-6">
                   <button className="btn-secondary w-full" onClick={() => setStep(1)}>Back</button>
-                  <button className="btn-primary w-full" onClick={() => setStep(3)}>Next</button>
+                  <button className="btn-primary w-full" onClick={() =>validateStep2 && setStep(3)}>Next</button>
                 </div>
               </>
             )}
@@ -238,40 +338,46 @@ const [panImage, setPanImage] = useState(null);
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input className="input" placeholder="Aadhaar Number"
+                  <div>
+                    <label className="font-bold ml-2">Aadhar Number</label>
+                    <input className="input" placeholder="Aadhaar Number"
                     onChange={(e) =>
                       setDocuments({ ...documents, aadhaar: e.target.value })
                     }
                   />
-                  <input className="input" placeholder="PAN Number"
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2">PAN Number</label>
+                    <input className="input" placeholder="PAN Number"
                     onChange={(e) =>
                       setDocuments({ ...documents, pan: e.target.value })
                     }
                   />
+                  </div>
 
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
   <div>
-    <label className="text-sm text-gray-600 mb-1 block">
+    <label className=" font-bold ml-2">
       Aadhaar Image
     </label>
     <input
       type="file"
       accept="image/*"
       className="input"
-      onChange={(e) => setAadhaarImage(e.target.files[0])}
+      onChange={(e) => setAadhaarImageFile(e.target.files[0])}
     />
   </div>
 
   <div>
-    <label className="text-sm text-gray-600 mb-1 block">
+    <label className=" font-bold ml-2">
       PAN Image
     </label>
     <input
       type="file"
       accept="image/*"
       className="input"
-      onChange={(e) => setPanImage(e.target.files[0])}
+      onChange={(e) => setPanImageFile(e.target.files[0])}
     />
   </div>
 </div>
