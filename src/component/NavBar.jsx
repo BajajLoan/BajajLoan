@@ -74,7 +74,8 @@ useEffect(() => {
           {/* ICONS */}
           {location.pathname !== "/signin" && (
             <div className="flex items-center gap-5 text-xl">
-              <div className="relative hidden sm:block bell-wrapper">
+              <div className="relative bell-wrapper">
+
   <FaBell
     className="text-xl cursor-pointer"
     onClick={() => hasNotification && setShowBellPopup(!showBellPopup)}

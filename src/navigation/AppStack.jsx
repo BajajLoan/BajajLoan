@@ -31,7 +31,9 @@ const AppStack = ()=>{
            <Route path="/education-loan" element={<Education/>}/>
            <Route path="/home-loan" element={<Homepage/>}/>
            <Route path="/login" element={<Login/>}/>
-           <Route path="/dashboard" element={<UserDashboard/>}/>
+           <Route path="/dashboard" element={<ProtectedRoute>
+      <UserDashboard />
+    </ProtectedRoute>}/>
            <Route path="/loan-application" element={<ApplicationPreview/>}/>
            <Route path="/Contact" element={<SupportPage/>}/>
            <Route path="/payment" element={<UPIPayment/>}/>

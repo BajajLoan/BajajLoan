@@ -19,10 +19,10 @@ export default function Apply() {
   const [personal, setPersonal] = useState({});
   const [bank, setBank] = useState({});
   const [documents, setDocuments] = useState({});
-  const [aadhaarImageFile, setAadhaarImageFile] = useState(null);
-const [panImageFile, setPanImageFile] = useState(null);
+  const [aadhaarImage, setAadhaarImageFile] = useState(null);
+const [panImage, setPanImageFile] = useState(null);
 
-console.log(aadhaarImageFile)
+console.log(aadhaarImage)
 const validateStep1 = () => {
   if (
     !personal.firstName ||
@@ -98,8 +98,8 @@ formData.append("aadhaar", documents.aadhaar);
 formData.append("pan", documents.pan);
 
 // DOCUMENT IMAGES
-if (aadhaarImageFile) formData.append("aadhaarImage", aadhaarImageFile);
-if (panImageFile) formData.append("panImage", panImageFile);
+if (aadhaarImage) formData.append("aadhaarImage", aadhaarImage);
+if (panImage) formData.append("panImage", panImage);
 
 // API
 await apiRequest("post","/apply", formData);
@@ -108,7 +108,7 @@ await apiRequest("post","/apply", formData);
     showSuccess("Loan Application Submitted Successfully");
     setShowPreview(true);
 
-    setTimeout(() => navigate("/dashboard"), 3000);
+    setTimeout(() => navigate("/dashboard",{replace:true}), 3000);
   } catch (error) {
     console.error(error);
     showError("Something went wrong!");
