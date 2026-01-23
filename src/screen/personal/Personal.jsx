@@ -49,11 +49,11 @@ const Personal = () => {
 
   return (
     <div className="bg-white">
-      <h2 className="text-lg sm:text-xl font-bold mt-2  mb-5 px-4">
+      <h2 className="text-lg sm:text-xl font-bold mt-2  mb-5 px-6">
         Apply for Loan
       </h2>
 
-      <div className="max-w-[1200px]  px-2 sm:px-4 lg:px-8 py-6">
+      <div className="max-w-[1200px]  px-4 sm:px-4 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
           {/* IMAGE + TEXT */}
@@ -63,7 +63,7 @@ const Personal = () => {
               alt="Personal Loan Banner"
               className="w-full max-h-[260px] sm:max-h-[320px] object-cover rounded-lg"
             />
-            <div className="mt-4 text-sm text-gray-600 leading-relaxed">
+            <div className="mt-4  ml-2 text-sm text-gray-600 leading-relaxed">
               <p>
                 Bajaj Finance offers a Personal loan of up to Rs. 15 crore* based on your eligibility,
                 with interest rates starting from 6%* p.a. Flexible tenure and hassle-free application.

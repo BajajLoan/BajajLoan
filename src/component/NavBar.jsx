@@ -3,13 +3,56 @@ import { FaBell } from "react-icons/fa";
 import { MdMenu, MdClose, MdCall, MdOutlineFormatAlignCenter } from "react-icons/md";
 import logo from "../assets/BajajLogo.png";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { History, LogOut, LucideLayoutDashboard } from "lucide-react";
+import apiRequest from "../services/api/apiRequest";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showSideMenu, setShowSideMenu] = useState(false);
+  const [hasNotification, setHasNotification] = useState(false);
+  
+const [showBellPopup, setShowBellPopup] = useState(false);
+
+
+  useEffect(() => {
+  const handleOutsideClick = (e) => {
+    if (!e.target.closest(".bell-wrapper")) {
+      setShowBellPopup(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleOutsideClick);
+  return () => document.removeEventListener("mousedown", handleOutsideClick);
+}, []);
+
+useEffect(() => {
+  setShowBellPopup(false);
+}, [location.pathname]);
+
+
+  useEffect(() => {
+  const fetchNotifications = async () => {
+    try {
+      const email = localStorage.getItem("email");
+      console.log(email,"email")
+      if (!email) return;
+
+      const res = await apiRequest(
+        "get",
+        `/pending-charges?email=${email}`
+      );
+
+      console.log(res)
+      setHasNotification(res.hasPending);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchNotifications();
+}, []);
 
   return (
     <>
@@ -31,7 +74,44 @@ const NavBar = () => {
           {/* ICONS */}
           {location.pathname !== "/signin" && (
             <div className="flex items-center gap-5 text-xl">
-              <FaBell className="hidden sm:block cursor-pointer" />
+              <div className="relative bell-wrapper">
+
+  <FaBell
+    className="text-xl cursor-pointer"
+    onClick={() => hasNotification && setShowBellPopup(!showBellPopup)}
+  />
+
+  {hasNotification && (
+    <span
+      className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px]
+      w-4 h-4 rounded-full flex items-center justify-center"
+    >
+      1
+    </span>
+  )}
+
+  {/* POPUP */}
+  {showBellPopup && hasNotification && (
+    <div className="absolute right-0 mt-3 w-64 bg-white rounded-xl shadow-2xl p-4 z-50">
+      <p className="text-black text-bold text-center">
+       Your loan is approved, get loan in your bank
+      </p>
+       <div className="flex justify-center mt-3">
+    <button
+      className="bg-blue-900 px-4 py-2 rounded-md"
+      onClick={() => navigate("/payment")}
+    >
+      <p className="text-[15px] md:text-md font-semibold text-white">
+        Get Loan
+      </p>
+    </button>
+    </div>
+    </div>
+    
+  )}
+</div>
+
+
               {/* <FaRegUser
                 onClick={() => navigate("/dashboard")}
                 className="cursor-pointer" */}
@@ -79,7 +159,7 @@ const NavBar = () => {
           </button>
 
           <button
-            onClick={() => { navigate("/applications"); setShowSideMenu(false); }}
+            onClick={() => { navigate("/loan-application"); setShowSideMenu(false); }}
             className="flex items-center gap-3 py-2 hover:text-indigo-600"
           >
             <MdOutlineFormatAlignCenter size={18} /> Loan Applications
@@ -113,9 +193,10 @@ const NavBar = () => {
           </div>
         </div>
       </div>
-
+     
       {/* NAV SPACER */}
       <div className="pt-20"></div>
+
     </>
   );
 };
