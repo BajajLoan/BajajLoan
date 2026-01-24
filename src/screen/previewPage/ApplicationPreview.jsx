@@ -111,7 +111,7 @@ export default function ApplicationsPreview() {
             </span>
           ) : (
             <span className="text-red-600 text-xs flex items-center gap-1">
-              Rejected
+              {/* Rejected */}
             </span>
           )}
         </div>

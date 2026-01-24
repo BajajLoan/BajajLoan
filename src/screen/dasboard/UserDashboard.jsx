@@ -26,6 +26,7 @@ export default function UserDashboard() {
         setLoading(true);
         const res = await apiRequest("get", "/user-detail");
         setApplications(res || []);
+        console.log(res)
       } catch (err) {
         console.error(err);
       } finally {
@@ -34,7 +35,7 @@ export default function UserDashboard() {
     };
     fetchApplications();
   }, []);
-
+  const detail = applications?.charges;
   if (loading) return <p className="text-center">Loading...</p>;
   if (!applications.length) return <p className="text-center">No data found</p>;
 
@@ -84,17 +85,23 @@ export default function UserDashboard() {
                   value={`${application.loanType?.tenure} months`}
                 />
               </Section>  
-               <Section title="Charges Details">
-                <Row label="Charges Name" value={application.charges?.chargesType} />
-                <Row
-                  label="Loan Amount"
-                  value={`₹${application.charges?.loanType}`}
-                />
-                <Row
-                  label="Charges"
-                  value={`${application.charges?.amount} months`}
-                />
-              </Section>
+              {/* CHARGES DETAILS */}
+{Array.isArray(application.charges) &&
+  application.charges.length > 0 && (
+    <Section title="Charges Details">
+      {application.charges.map((item, index) => (
+        <div
+          key={index}
+          className=""
+        >
+          <Row label="Charge Type" value={item?.chargeType} />
+          <Row label="Loan Type" value={item?.loanType} />
+          <Row label="Amount" value={`₹${item?.amount}`} />
+        </div>
+      ))}
+    </Section>
+  )}
+
 
               {/* PERSONAL DETAILS */}
               <Section title="Personal Details">
