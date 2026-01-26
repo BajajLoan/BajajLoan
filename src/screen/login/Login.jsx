@@ -14,17 +14,38 @@ export default function Login() {
   const otpRef = useRef([]);
   const navigate = useNavigate();
 
-  const { sendOtp, verifyOtp, showOtp, setShowOtp } = useAuth();
+  const { sendOtp, verifyOtp, showOtp } = useAuth();
 
+  /* ✅ OTP CHANGE (ONLY NUMBER + AUTO FOCUS) */
   const handleOtpChange = (e, i) => {
     const val = e.target.value;
+
+    // only single digit number
     if (!/^[0-9]?$/.test(val)) return;
 
     const newOtp = [...otp];
     newOtp[i] = val;
     setOtp(newOtp);
 
-    if (val && i < 5) otpRef.current[i + 1].focus();
+    if (val && i < 5) {
+      otpRef.current[i + 1]?.focus();
+    }
+  };
+
+  /* ✅ BACKSPACE FIX (ONLY CURRENT BOX CLEAR) */
+  const handleKeyDown = (e, i) => {
+    if (e.key === "Backspace") {
+      const newOtp = [...otp];
+
+      if (otp[i]) {
+        newOtp[i] = "";
+        setOtp(newOtp);
+      } else if (i > 0) {
+        otpRef.current[i - 1]?.focus();
+        newOtp[i - 1] = "";
+        setOtp(newOtp);
+      }
+    }
   };
 
   const handleSendOtp = async () => {
@@ -59,13 +80,6 @@ export default function Login() {
         <div className="login-card">
           <h2>Sign-in to Bajaj Finserv</h2>
 
-          {/* <div className="account-tabs">
-            <span className="active">Individual</span>
-            <span>Corporate/Business</span>
-            <span>NRI</span>
-            <span className="help">Help?</span>
-          </div> */}
-
           {!showOtp ? (
             <>
               <label>Email</label>
@@ -86,12 +100,17 @@ export default function Login() {
               <p className="otp-info">Enter OTP sent to {email}</p>
 
               <div className="otp-box">
-                {otp.map((_, i) => (
+                {otp.map((val, i) => (
                   <input
                     key={i}
-                    maxLength="1"
+                    value={val}
                     ref={(el) => (otpRef.current[i] = el)}
                     onChange={(e) => handleOtpChange(e, i)}
+                    onKeyDown={(e) => handleKeyDown(e, i)}
+                    maxLength="1"
+                    inputMode="numeric"     /* ✅ numeric keyboard */
+                    pattern="[0-9]*"        /* ✅ force number */
+                    type="text"             /* ❗ keep text to avoid keyboard jump */
                   />
                 ))}
               </div>
@@ -114,22 +133,17 @@ export default function Login() {
         <h1>Welcome!</h1>
         <p>
           Access and manage all your Bajaj Finserv services in one place. Sign in
-          to view your account details, track loans and EMIs, explore
-          personalised offers, download documents, and much more.
+          to view your account details, track loans and EMIs, explore personalised
+          offers, download documents, and much more.
         </p>
 
         <div className="app-section">
-          {/* <img src="/qr.png" alt="QR" className="qr" /> */}
-          <div>
-            <p className="app-text">
-              Download our app for a personalised experience
-            </p>
-            <div className="store-icons">
-              <DiAndroid color="black" size={24}/>
-              {/* <h1>Android</h1> */}
-              <FaApple color="black" size={24}/>
-              {/* <h1>Ios</h1> */}
-            </div>
+          <p className="app-text">
+            Download our app for a personalised experience
+          </p>
+          <div className="store-icons">
+            <DiAndroid size={24} />
+            <FaApple size={24} />
           </div>
         </div>
 

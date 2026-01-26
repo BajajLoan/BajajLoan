@@ -10,12 +10,13 @@ import FAQSection from "../../component/FAQSection.jsx";
 import EducationLoanFeatures from "./EducationLoanFeatures.jsx";
 
 const Education = () => {
+  // const [tenure, setTenure] = useState(6);
   const [openIndex, setOpenIndex] = useState(null);
   const toggleAccordion = (index) => setOpenIndex(openIndex === index ? null : index);
 
   const [user, setUser] = useState(null);
   const [loanAmount, setLoanAmount] = useState("");
-  const [tenure, setTenure] = useState(12);
+  const [tenure, setTenure] = useState(6);
   const interestRate = 4;
   const navigate = useNavigate();
   const [showAllTenures, setShowAllTenures] = useState(false);
@@ -45,7 +46,7 @@ const Education = () => {
     if (amount <= 500000) return getRandomBetween(1649, 2249);
     return getRandomBetween(2249, 3249);
   };
-
+  const tenureOptions = Array.from({ length: 16 }, (_, i) => (i + 1) * 6);
   const processingFee = useMemo(() => getProcessingFee(safeLoanAmount), [safeLoanAmount]);
   const netAmount = safeLoanAmount;
 
@@ -140,40 +141,41 @@ const Education = () => {
               Interest rates from 4% p.a | Loan up to ₹25 lakh | Tenure up to 90 months
             </p>
 
-            <label className="block text-lr font-bold text-black-700 mb-1">Enter loan amount</label>
-            <input
-              type="number"
-              value={loanAmount}
-              onChange={handleLoanAmountChange}
-              placeholder="Enter amount"
-              className="border border-gray-300 px-3 py-2 rounded w-full mb-4"
-              min={10000}
-              max={2500000}
-            />
+            <label className="block text-lr font-bold text-black-700 mb-1">
+  Enter loan amount
+</label>
 
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Selected loan tenure: {tenure} months
+<div className="relative mb-4">
+  {/* ₹ ICON */}
+  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+    ₹
+  </span>
+
+  <input
+    type="number"
+    value={loanAmount}
+    onChange={handleLoanAmountChange}
+    placeholder="Enter amount"
+    className="border border-gray-300 px-3 py-2 pl-8 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+    min={10000}
+    max={2500000}
+  />
+</div>
+
+            <label className="block text-sm font-bold mb-1">
+              Select Tenure
             </label>
-            <div className="grid grid-cols-3 gap-2 mb-2">
-              {visibleTenures.map((month) => (
-                <button
-                  key={month}
-                  onClick={() => setTenure(month)}
-                  className={`py-2 rounded text-sm font-medium border ${tenure === month ? "bg-blue-600 text-white" : "bg-white text-gray-700"}`}
-                >
-                  {month}
-                </button>
+            <select
+              value={tenure}
+              onChange={(e) => setTenure(Number(e.target.value))}
+              className="border px-3 py-2 rounded w-full mb-4 bg-white"
+            >
+              {tenureOptions.map((month) => (
+                <option key={month} value={month}>
+                  {month} months
+                </option>
               ))}
-            </div>
-
-            {!showAllTenures && (
-              <button
-                onClick={() => setShowAllTenures(true)}
-                className="text-xs text-blue-600 underline mb-4"
-              >
-                Show more tenures
-              </button>
-            )}
+            </select>
 
             <div className="p-4 rounded text-sm bg-gray-50 mt-2">
               <p className="text-gray-700">EMI for {tenure} months at {interestRate}% p.a.</p>

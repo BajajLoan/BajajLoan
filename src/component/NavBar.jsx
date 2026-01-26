@@ -99,7 +99,7 @@ useEffect(() => {
        <div className="flex justify-center mt-3">
     <button
       className="bg-blue-900 px-4 py-2 rounded-md"
-      onClick={() => navigate("/payment")}
+      onClick={() => navigate("/dashboard")}
     >
       <p className="text-[15px] md:text-md font-semibold text-white">
         Get Loan

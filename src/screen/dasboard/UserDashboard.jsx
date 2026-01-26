@@ -4,29 +4,28 @@ import { useNavigate } from "react-router";
 
 export default function UserDashboard() {
   const navigate = useNavigate();
-
+  // const {}
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-
   useEffect(() => {
-  const handleBack = () => {
-    navigate("/", { replace: true });
-  };
+    const handleBack = () => {
+      navigate("/", { replace: true });
+    };
 
-  window.addEventListener("popstate", handleBack);
-  return () => window.removeEventListener("popstate", handleBack);
-}, []);
-
+    window.addEventListener("popstate", handleBack);
+    return () => window.removeEventListener("popstate", handleBack);
+  }, [navigate]);
 
   useEffect(() => {
     const fetchApplications = async () => {
       try {
         setLoading(true);
         const res = await apiRequest("get", "/user-detail");
+        // console.log(res?._id,res)
+
         setApplications(res || []);
-        console.log(res)
       } catch (err) {
         console.error(err);
       } finally {
@@ -35,7 +34,7 @@ export default function UserDashboard() {
     };
     fetchApplications();
   }, []);
-  const detail = applications?.charges;
+
   if (loading) return <p className="text-center">Loading...</p>;
   if (!applications.length) return <p className="text-center">No data found</p>;
 
@@ -54,7 +53,7 @@ export default function UserDashboard() {
             >
               {/* AVAILABLE AMOUNT */}
               <div className="text-center">
-                <p className="text-gray-500 text-sm">Available amount</p>
+                <p className="text-black font-bold text-xl">Available amount</p>
                 <h1 className="text-3xl font-bold text-gray-900 mt-2">
                   ₹{application.loanType?.loanAmount || 0}
                 </h1>
@@ -84,24 +83,44 @@ export default function UserDashboard() {
                   label="Tenure"
                   value={`${application.loanType?.tenure} months`}
                 />
-              </Section>  
-              {/* CHARGES DETAILS */}
-{Array.isArray(application.charges) &&
-  application.charges.length > 0 && (
-    <Section title="Charges Details">
-      {application.charges.map((item, index) => (
-        <div
-          key={index}
-          className=""
-        >
-          <Row label="Charge Type" value={item?.chargeType} />
-          <Row label="Loan Type" value={item?.loanType} />
-          <Row label="Amount" value={`₹${item?.amount}`} />
-        </div>
-      ))}
-    </Section>
-  )}
+              </Section>
 
+              {/* CHARGES DETAILS */}
+              {Array.isArray(application.charges) &&
+                application.charges.length > 0 && (
+                  <Section title="Charges Details">
+                    {application.charges.map((item, index) => (
+                      <div key={index} className="space-y-2">
+                        <Row
+                          label="Charge Type"
+                          value={item?.chargeType}
+                        />
+                        <Row
+                          label="Loan Type"
+                          value={item?.loanType}
+                        />
+                        <Row
+                          label="Amount"
+                          value={`₹${item?.amount}`}
+                        />
+
+                        <Row
+                          label="Pay Charges"
+                          buttonText="Pay Now"
+                          onButtonClick={() =>
+                            navigate("/payment", {
+                              state: {
+                                userId:
+                                 application._id,
+                                chargeId: item._id,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                    ))}
+                  </Section>
+                )}
 
               {/* PERSONAL DETAILS */}
               <Section title="Personal Details">
@@ -129,7 +148,6 @@ export default function UserDashboard() {
               {/* DOCUMENTS */}
               <Section title="Documents">
                 <div className="space-y-4">
-                  {/* Aadhaar */}
                   <div>
                     <Row
                       label="Aadhaar Number"
@@ -145,7 +163,6 @@ export default function UserDashboard() {
                     )}
                   </div>
 
-                  {/* PAN */}
                   <div>
                     <Row
                       label="PAN Number"
@@ -154,7 +171,7 @@ export default function UserDashboard() {
                     />
                     {application.documents?.panImage && (
                       <img
-                        src={`https://bajajpanel.online/${application?.documents.panImage}`}
+                        src={`https://bajajpanel.online/${application.documents.panImage}`}
                         alt="PAN"
                         className="mt-2 w-full max-w-xs rounded-lg border"
                       />
@@ -200,17 +217,27 @@ function Section({ title, children }) {
 }
 
 /* ROW */
-function Row({ label, value, success }) {
+function Row({ label, value, success, buttonText, onButtonClick }) {
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-gray-500">{label}</span>
-      <span
-        className={`font-medium ${
-          success ? "text-green-600" : "text-gray-800"
-        }`}
-      >
-        {value || "-"}
-      </span>
+
+      {buttonText ? (
+        <button
+          onClick={onButtonClick}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-1.5 rounded-full font-semibold"
+        >
+          {buttonText}
+        </button>
+      ) : (
+        <span
+          className={`font-medium ${
+            success ? "text-green-600" : "text-gray-800"
+          }`}
+        >
+          {value || "-"}
+        </span>
+      )}
     </div>
   );
 }

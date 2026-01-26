@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import "react-toastify/dist/ReactToastify.css";
 import apiRequest from "../services/api/apiRequest";
+import { showError, showSuccess } from "../services/utils/toastUtil";
 
 const UPIPayment = () => {
   const [paymentData, setPaymentData] = useState(null);
@@ -14,10 +15,10 @@ const UPIPayment = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { processingFee, charges, loanName, chargesName } = location.state || {};
-
-  const amountToPay = charges || processingFee;
-  const lName = chargesName || loanName;
+  const { userId,chargeId} = location.state || {};
+  console.log(userId,chargeId)
+  // const amountToPay = charges || processingFee;
+  // const lName = chargesName || loanName;
 
   useEffect(()=>{
     getPaymentDetails();
@@ -32,13 +33,37 @@ const UPIPayment = () => {
       console.log("Something went wrong!")
     }
   }
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      // reader.onloadend = () => setImageBase64(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePayment= async ()=>{
+    try{
+      const formData = new FormData();
+      formData.append("applicationId",userId);
+      formData.append("chargeId",chargeId);
+      formData.append("image",image)
+      const res = await apiRequest("put","/user/payment",formData)
+      showSuccess(res?.message || "Amount Paid Successfully")
+      console.log(res,"hello")
+    }
+    catch(error){
+      showError(error)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-purple-100 px-4 py-6">
       <ToastContainer />
       <div className="max-w-2xl mx-auto bg-white shadow-xl border border-gray-200 rounded-2xl p-6">
         <h1 className="text-2xl md:text-3xl font-bold text-center text-blue-800 mb-4">
-          Pay ₹{amountToPay} for {lName}
+          {/* Pay ₹{amountToPay} for {lName} */}
         </h1>
 
         {/* UPI ID Section */}
@@ -58,7 +83,7 @@ const UPIPayment = () => {
 
         {/* QR Code Image */}
         <div className="flex justify-center mb-6">
-          {/* <img src={upiData.qrImage} alt="QR Code" className="w-52 h-52 border rounded shadow-md" /> */}
+          <img src={`https://bajajpanel.online/${paymentData?.qrImage}`} alt="QR Code" className="w-52 h-52 border rounded shadow-md" />
         </div>
 
         <h2 className="text-center font-semibold text-gray-700 mb-3">Or choose your UPI app</h2>
@@ -73,18 +98,18 @@ const UPIPayment = () => {
         <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
           <h2 className="text-lg font-semibold text-blue-700 mb-2 text-center">Pay with Bank Transfer</h2>
           <p><strong>Account Holder:</strong>
-           {paymentData?.bankAccountHolder}
+           {paymentData?.accountNumber}
            </p>
           <p><strong>Account Number:
 
           </strong>
-           {/* {paymentData.accountNumber} */}
+           {paymentData?.accountHolder}
            </p>
           <p><strong>Bank Name:</strong>
-           {/* {upiData.bankName} */}
+           {paymentData?.bankName}
            </p>
           <p><strong>IFSC Code:</strong>
-           {/* {upiData.ifscCode} */}
+           {paymentData?.ifsc}
            </p>
           <p className="text-red-500 mt-2 text-center text-sm">Facing issues?</p>
           <div className="text-center mt-1">
@@ -103,13 +128,13 @@ const UPIPayment = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={{}}
+            onChange={(e) => setImage(e.target.files[0])}
             className="w-full text-sm border px-3 py-2 rounded-md bg-white"
           />
         </div>
 
         <button
-          onClick={{}}
+          onClick={handlePayment}
           className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold text-lg"
         >
           Submit Payment Slip

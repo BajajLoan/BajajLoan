@@ -102,15 +102,27 @@ const Homepage = () => {
             <h2 className="text-xl font-bold mb-4">Home Loan</h2>
             <p className="text-sm text-gray-600 mb-4">Interest rates starting 6% p.a | Loan upto Rs. 15cr* | Tenure up to 96 months*</p>
 
-            <label className="block text-lr font-bold text-black-700 mb-1">Enter loan amount</label>
-            <input
-              type="number"
-              value={loanAmount}
-              onChange={handleLoanAmountChange}
-              className="border border-gray-300 px-3 py-2 rounded w-full mb-4"
-              min={100000}
-              max={15000000}
-            />
+            <label className="block text-lr font-bold text-black-700 mb-1">
+  Enter loan amount
+</label>
+
+<div className="relative mb-4">
+  {/* ₹ ICON */}
+  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+    ₹
+  </span>
+
+  <input
+    type="number"
+    value={loanAmount}
+    onChange={handleLoanAmountChange}
+    placeholder="Enter amount"
+    className="border border-gray-300 px-3 py-2 pl-8 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+    min={10000}
+    max={2500000}
+  />
+</div>
+
 
             <label className="block text-sm font-medium text-gray-700 mb-1">Selected loan tenure: {tenure} months</label>
             <div className="grid grid-cols-3 gap-2 mb-2">

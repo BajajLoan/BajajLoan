@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../../services/api/apiRequest";
 import { Calendar, IndianRupee, CheckCircle, FileText, XCircle } from "lucide-react";
+import Footer from "../../component/Footer";
+import Disclaimer from "../../component/Disclaimer";
+import FAQSection from "../../component/FAQSection";
 
 export default function ApplicationsPreview() {
   const [loading, setLoading] = useState(false);
@@ -161,6 +164,11 @@ export default function ApplicationsPreview() {
           </div>
         ))}
       </div>
+       {/* <BusinessLoanEMICalculator /> */}
+            {/* <BusinessLoanFeatures /> */}
+            <FAQSection />
+            <Disclaimer />
+            <Footer />
     </div>
   );
 }

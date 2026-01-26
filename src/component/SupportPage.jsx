@@ -4,18 +4,35 @@ import Footer from "./Footer";
 import FAQSection from "./FAQSection";
 import Disclaimer from "./Disclaimer";
 import { FaMailBulk, FaPhone, FaWhatsapp } from "react-icons/fa";
+import apiRequest from "../services/api/apiRequest";
 
 const SupportPage = () => {
   const navigate = useNavigate();
   const [adminPhone, setPhone] = useState("");
   const [adminEmail, setEmail] = useState("");
   const [adminWhatsapp, setAdminWhatsapp] = useState("");
-
+    // const 
   const message = "Hi";
   const encodedMessage = encodeURIComponent(message);
   const whatsappURL = `https://wa.me/${adminWhatsapp}?text=${encodedMessage}`;
 
   const gotoHome = () => navigate("/");
+
+  useEffect(()=>{
+    fetchContact();
+  },[]);
+
+  const fetchContact = async ()=>{
+    try{
+        const response = await apiRequest("get","/contact");
+      console.log(response);
+      setPhone(response?.contactNumber);
+      setEmail(response?.email);
+      setAdminWhatsapp(response?.whatsappNumber)
+    }catch(error){
+      console.log(error)
+    }
+  }
 
   return (
     <div>
