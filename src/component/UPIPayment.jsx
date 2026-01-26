@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-// import { doc, getDoc, updateDoc, collection, getDocs } from "firebase/firestore";
-// import { db } from "../firebase";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-// import { getAuth } from "firebase/auth";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import "react-toastify/dist/ReactToastify.css";
+import apiRequest from "../services/api/apiRequest";
 
 const UPIPayment = () => {
-  const [upiData, setUpiData] = useState(null);
+  const [paymentData, setPaymentData] = useState(null);
   const [copied, setCopied] = useState(false);
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState("");
@@ -21,76 +19,19 @@ const UPIPayment = () => {
   const amountToPay = charges || processingFee;
   const lName = chargesName || loanName;
 
-  // const auth = getAuth();
-  // const user = auth.currentUser;
+  useEffect(()=>{
+    getPaymentDetails();
+  },[]);
 
-  // useEffect(() => {
-  //   const fetchUPIDetails = async () => {
-  //     const docRef = doc(db, "adminConfig", "credentials");
-  //     const snap = await getDoc(docRef);
-  //     if (snap.exists()) setUpiData(snap.data());
-  //   };
-  //   fetchUPIDetails();
-  // }, []);
-
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setImage(file);
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => setImageBase64(reader.result);
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  // const handleSubmit = async () => {
-  //   if (!imageBase64) {
-  //     toast.error("Please upload a payment screenshot.");
-  //     return;
-  //   }
-
-  //   if (!popupShown) {
-  //     toast.success("Loan amount will be deposited in your bank account within 1 hour.");
-  //     setPopupShown(true);
-  //   }
-
-  //   try {
-  //     let found = false;
-
-  //     const updateInCollection = async (collectionName) => {
-  //       const snap = await getDocs(collection(db, "applications", user.uid, collectionName));
-  //       for (const docSnap of snap.docs) {
-  //         const data = docSnap.data();
-  //         const nameMatches = data.loanName === lName || data.chargesName === lName;
-  //         const amountMatches = data.charges === amountToPay || data.processingFee === amountToPay;
-  //         if (nameMatches && amountMatches) {
-  //           const ref = doc(db, "applications", user.uid, collectionName, docSnap.id);
-  //           await updateDoc(ref, {
-  //             paymentSlipBase64: imageBase64,
-  //             paymentSubmittedAt: new Date(),
-  //           });
-  //           found = true;
-  //           break;
-  //         }
-  //       }
-  //     };
-
-  //     await updateInCollection("loanRequests");
-  //     if (!found) await updateInCollection("adminRequest");
-
-  //     if (found) {
-  //       toast.success("Payment slip submitted successfully!");
-  //       setTimeout(() => navigate("/history"), 1500);
-  //     } else {
-  //       toast.error("No matching request found to update.");
-  //     }
-  //   } catch (err) {
-  //     console.error("Upload failed", err);
-  //     toast.error("Failed to upload. Try again.");
-  //   }
-  // };
-
-  // if (!upiData) return <p className="text-center mt-10 text-gray-600">Loading payment details...</p>;
+  const getPaymentDetails = async ()=>{
+    try{
+      const response = await apiRequest("get","/payment")
+      setPaymentData(response[0])
+      console.log(response,"response")
+    }catch(error){
+      console.log("Something went wrong!")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-purple-100 px-4 py-6">
@@ -107,7 +48,7 @@ const UPIPayment = () => {
             <span className="text-base font-medium truncate">
               {/* {upiData.upiId} */}
               </span>
-            <CopyToClipboard text={{}} onCopy={() => setCopied(true)}>
+            <CopyToClipboard text={paymentData?.upiId} onCopy={() => setCopied(true)}>
               <button className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
                 {copied ? "Copied" : "Copy"}
               </button>
@@ -132,12 +73,12 @@ const UPIPayment = () => {
         <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
           <h2 className="text-lg font-semibold text-blue-700 mb-2 text-center">Pay with Bank Transfer</h2>
           <p><strong>Account Holder:</strong>
-           {/* {upiData.bankAccountHolderName} */}
+           {paymentData?.bankAccountHolder}
            </p>
           <p><strong>Account Number:
 
           </strong>
-           {/* {upiData.accNumber} */}
+           {/* {paymentData.accountNumber} */}
            </p>
           <p><strong>Bank Name:</strong>
            {/* {upiData.bankName} */}
