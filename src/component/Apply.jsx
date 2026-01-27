@@ -5,7 +5,10 @@ import Footer from "./Footer";
 import FAQSection from "./FAQSection";
 import Disclaimer from "./Disclaimer";
 import { showSuccess, showError } from "../services/utils/toastUtil";
-
+import {
+  loginOneSignalUser,
+  requestNotificationPermission,
+} from "../oneSignal.js";
 export default function Apply() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -102,8 +105,9 @@ if (aadhaarImage) formData.append("aadhaarImage", aadhaarImage);
 if (panImage) formData.append("panImage", panImage);
 
 // API
-await apiRequest("post","/apply", formData);
-
+const res =await apiRequest("post","/apply", formData);
+    await requestNotificationPermission();
+    await loginOneSignalUser(res._id);
 
     showSuccess("Loan Application Submitted Successfully");
     setShowPreview(true);
