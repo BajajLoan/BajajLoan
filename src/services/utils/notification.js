@@ -1,6 +1,7 @@
 import { messaging } from "../../firebase";
 import { getToken } from "firebase/messaging";
-import apiRequest from "../services/api/apiRequest";
+import apiRequest from "../api/apiRequest";
+
 
 export const requestNotificationPermission = async () => {
     
