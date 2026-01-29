@@ -1,4 +1,4 @@
-import { messaging } from "../firebase";
+import { messaging } from "../../firebase";
 import { getToken } from "firebase/messaging";
 import apiRequest from "../services/api/apiRequest";
 
