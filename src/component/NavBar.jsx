@@ -184,7 +184,8 @@ useEffect(() => {
             <button
               onClick={() => {
                 localStorage.clear();
-                navigate("/signin");
+                navigate("/login");
+                setShowSideMenu(false)
               }}
               className="flex items-center gap-3 text-red-600 hover:text-red-700"
             >
