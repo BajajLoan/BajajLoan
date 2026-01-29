@@ -1,5 +1,9 @@
 
 # Logs
+# env files
+.env
+.env.*
+
 .envbjkb
 logs
 *.log
