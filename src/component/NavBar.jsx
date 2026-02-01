@@ -48,9 +48,6 @@ useEffect(() => {
       console.log(res)
       setHasNotification(res.hasPending);
     }
-    else{
-      navigate("/login")
-    }
     } catch (err) {
       console.error(err);
     }
