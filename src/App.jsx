@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import AppStack from "./navigation/AppStack"
 import {requestNotificationPermission} from "./services/utils/notification"
 const App = () => {
 
