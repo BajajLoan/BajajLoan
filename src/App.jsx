@@ -3,25 +3,20 @@ import AppStack from "./navigation/AppStack"
 import {requestNotificationPermission} from "./services/utils/notification"
 const App = () => {
 
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/firebase-messaging-sw.js")
-        .then(() => console.log("Service Worker registered"))
-        .catch(err => console.error("SW registration failed", err));
-    }
-  }, []);
+ useEffect(() => {
+    const registerSW = async () => {
+      if ("serviceWorker" in navigator) {
+        const registration = await navigator.serviceWorker.register(
+          "/firebase-messaging-sw.js"
+        );
+        console.log("Service Worker registered");
 
-  useEffect(() => {
-    const asked = localStorage.getItem("fcmPermission");
-    if (!asked) {
-      console.log("hello token")
-      requestNotificationPermission()
-        .then(() => {
-          localStorage.setItem("fcmPermission", "true");
-        })
-        .catch(() => {});
-    }
+        // 🔥 yahin se token generate call karo
+        requestNotificationPermission(registration);
+      }
+    };
+
+    registerSW();
   }, []);
 
   return <AppStack />;
