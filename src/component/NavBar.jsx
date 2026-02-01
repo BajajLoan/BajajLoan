@@ -39,8 +39,8 @@ useEffect(() => {
     try {
       const email = localStorage.getItem("email");
       if (!email) return;
-      if(token)return;
-      
+      if(!token)return;
+
       const res = await apiRequest(
         "get",
         `/pending-charges?email=${email}`
