@@ -3,12 +3,22 @@ import { getToken } from "firebase/messaging";
 import apiRequest from "../api/apiRequest";
 
 
+
+const clearOldPushSubscription = async (serviceWorkerRegistration) => {
+  const subscription = await serviceWorkerRegistration.pushManager.getSubscription();
+  if (subscription) {
+    console.log("Old push subscription found, unsubscribing...");
+    await subscription.unsubscribe();
+  }
+};
+
+
 export const requestNotificationPermission = async (serviceWorkerRegistration) => {
   console.log("Requesting permission...");
 
   const permission = await Notification.requestPermission();
   console.log("Permission:", permission);
-
+await clearOldPushSubscription(serviceWorkerRegistration);
   if (permission !== "granted") return;
 
   const token = await getToken(messaging, {
