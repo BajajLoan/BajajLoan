@@ -6,8 +6,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { History, LogOut, LucideLayoutDashboard } from "lucide-react";
 import apiRequest from "../services/api/apiRequest";
+import { useAuth } from "../navigation/AuthContext";
 
 const NavBar = () => {
+  const { token } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [showSideMenu, setShowSideMenu] = useState(false);
@@ -36,9 +38,8 @@ useEffect(() => {
   const fetchNotifications = async () => {
     try {
       const email = localStorage.getItem("email");
-      console.log(email,"email")
       if (!email) return;
-
+      if(token){
       const res = await apiRequest(
         "get",
         `/pending-charges?email=${email}`
@@ -46,6 +47,10 @@ useEffect(() => {
 
       console.log(res)
       setHasNotification(res.hasPending);
+    }
+    else{
+      navigate("/login")
+    }
     } catch (err) {
       console.error(err);
     }
