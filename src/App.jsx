@@ -6,7 +6,7 @@ const App = () => {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("public/firebase-messaging-sw.js")
+        .register("/firebase-messaging-sw.js")
         .then(() => console.log("Service Worker registered"))
         .catch(err => console.error("SW registration failed", err));
     }
