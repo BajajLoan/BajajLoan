@@ -190,9 +190,9 @@
 }
 
 /* MOBILE */
-@media (max-width: 900px) {
+@media (max-width: 998px) {
   .bajaj-login {
-    margin-top: "40px";
+    margin-top: 40;
     flex-direction: column;
   }
 
