@@ -11,7 +11,7 @@ export const requestNotificationPermission = async () => {
     const token = await getToken(messaging, {
       vapidKey: "BCctoNNU-PnS-vDnkwDQsDSvJaDasGWmEfEJrah_x8InZqbk1YDBi7LE5VCW7ZnqpSgzmkYLZsiVHkpkU-ETZyU",
     });
-
+    await localStorage.setItem("fcmToken",token)
     await apiRequest("post", "/save-fcm-token", { token });
   }
 };

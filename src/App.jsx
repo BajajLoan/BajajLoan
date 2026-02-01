@@ -13,7 +13,14 @@ const App = () => {
     .catch(err => console.error("SW registration failed", err));
 }
   useEffect(()=>{
-      requestNotificationPermission()
+      const asked = localStorage.getItem("fcmPermission");
+      if(!asked){
+        requestNotificationPermission()
+        .then(()=>{
+          localStorage.setItem("fcmPermission",true)
+        })
+        .catch(()=>{})
+      }
   },[])
 
   return  <AppStack />
