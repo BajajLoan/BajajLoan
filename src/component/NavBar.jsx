@@ -75,7 +75,7 @@ useEffect(() => {
           </div>
 
           {/* ICONS */}
-          {location.pathname !== "/signin" && (
+          {location.pathname !== "/login" && (
             <div className="flex items-center gap-5 text-xl">
               <div className="relative bell-wrapper">
 
