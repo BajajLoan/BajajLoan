@@ -39,7 +39,7 @@ const AppStack = ()=>{
            <Route path="/payment" element={<UPIPayment/>}/>
            <Route path="/term&condition" element={<TermCondition/>}/>
        </Routes>
-    {/* //    </Router> */}
+   
     </>
    
     )
