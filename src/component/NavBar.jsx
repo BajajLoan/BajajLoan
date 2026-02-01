@@ -39,7 +39,8 @@ useEffect(() => {
     try {
       const email = localStorage.getItem("email");
       if (!email) return;
-      if(token){
+      if(token)return;
+      
       const res = await apiRequest(
         "get",
         `/pending-charges?email=${email}`
@@ -47,7 +48,7 @@ useEffect(() => {
 
       console.log(res)
       setHasNotification(res.hasPending);
-    }
+    
     } catch (err) {
       console.error(err);
     }
