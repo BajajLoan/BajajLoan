@@ -1,7 +1,7 @@
 
 
 
-* {
+*{
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Arial, sans-serif;
@@ -9,6 +9,9 @@
 }
 
 .bajaj-login {
+  /* margin-top: 12px; */
+  align-items: center;
+  justify-content: center;
   display: flex;
   min-height: 100vh;
   background: linear-gradient(
@@ -25,16 +28,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-   background: linear-gradient(
+   /* background: linear-gradient(
     180deg,
     #f3f8fc 0%,
     #e8f1f9 50%,
     #dceaf6 100%
-  );
+  ); */
 }
 
 .login-card {
-  background: #ffffff;
+  /* background: #ffffff; */
   width: 420px;
   padding: 32px;
   border-radius: 14px;
@@ -131,12 +134,12 @@
 .login-right {
   width: 55%;
   padding: 90px 80px;
-  background: linear-gradient(
+  /* background: linear-gradient(
     180deg,
     #f3f8fc 0%,
     #e8f1f9 50%,
     #dceaf6 100%
-  );
+  ); */
 }
 
 .login-right h1 {
