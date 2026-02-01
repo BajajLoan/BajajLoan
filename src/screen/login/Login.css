@@ -7,7 +7,7 @@
 }
 
 .bajaj-login {
-  /* margin-top: 12px; */
+  margin-top: 12px;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -192,7 +192,7 @@
 /* MOBILE */
 @media (max-width: 998px) {
   .bajaj-login {
-    margin-top: 40;
+     margin-top: 4rem;
     flex-direction: column;
   }
 
