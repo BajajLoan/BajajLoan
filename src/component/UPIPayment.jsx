@@ -59,7 +59,7 @@ const UPIPayment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-purple-100 px-4 py-6">
+    <div className="min-h-screen mt-12 bg-gradient-to-br from-white via-blue-50 to-purple-100 px-4 py-6">
       <ToastContainer />
       <div className="max-w-2xl mx-auto bg-white shadow-xl border border-gray-200 rounded-2xl p-6">
         <h1 className="text-2xl md:text-3xl font-bold text-center text-blue-800 mb-4">

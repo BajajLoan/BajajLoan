@@ -36,7 +36,7 @@ const SupportPage = () => {
 
   return (
     <div>
-      <div className="relative bg-[#e8f0ff] min-h-screen p-6 md:p-10">
+      <div className="relative bg-[#e8f0ff] mt-12 min-h-screen p-6 md:p-10">
         <div className="max-w-5xl mx-auto space-y-6">
 
           {/* Reach Us */}
