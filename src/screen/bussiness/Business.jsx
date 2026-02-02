@@ -52,7 +52,7 @@ const Business = () => {
   const tenureOptions = Array.from({ length: 16 }, (_, i) => (i + 1) * 6);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white mt-16">
       <h2 className="text-xl font-bold text-center mb-4">Apply for Loan</h2>
 
       <div className="max-w-[1200px] px-4 sm:px-6 lg:px-8 py-8">

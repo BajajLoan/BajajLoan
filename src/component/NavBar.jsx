@@ -60,7 +60,7 @@ useEffect(() => {
   return (
     <>
       {/* TOP NAVBAR */}
-      <nav className="bg-[#002b5c] text-white px-4 py-3 shadow-md fixed top-0 left-0 w-full z-50">
+      <nav className="bg-[#002b5c] text-white px-4 py-3 shadow-md fixed top-0 mb-2 left-0 w-full z-50">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
 
           {/* LOGO */}

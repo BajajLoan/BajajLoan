@@ -33,10 +33,10 @@ export default function UserDashboard() {
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (!applications.length)
-    return <p className="text-center justify-center  mt-10">No data found</p>;
+    return <p className="text-center justify-center  mt-16">No data found</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50 flex justify-center px-3 sm:px-4 py-6">
+    <div className="min-h-screen mt-12 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50 flex justify-center px-3 sm:px-4 py-6">
       <div className="w-full max-w-4xl space-y-6">
         {applications.map((application) => {
           const baseAmount = application.loanType?.loanAmount || 0;
@@ -56,7 +56,7 @@ export default function UserDashboard() {
           return (
             <div
               key={application._id}
-              className="bg-white rounded-3xl shadow-lg p-5 sm:p-6 space-y-6"
+              className="bg-white rounded-3xl mt-12 shadow-lg p-5 sm:p-6 space-y-6"
             >
               {/* AVAILABLE AMOUNT */}
               <div className="text-center space-y-2">
@@ -196,7 +196,7 @@ export default function UserDashboard() {
 /* SECTION */
 function Section({ title, children }) {
   return (
-    <div>
+    <div className="mt-12" >
       <h2 className="text-sm font-semibold text-gray-500 mb-3 uppercase">
         {title}
       </h2>

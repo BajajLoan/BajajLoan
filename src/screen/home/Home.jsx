@@ -45,7 +45,7 @@ const Home =()=>{
   
 ];
     return (
-         <div className="mt-0">
+         <div className="mt-10">
       <section className="bg-[#f6f8fe] py-10 px-4 sm:px-6 lg:px-8">
         
         <div className="max-w-7xl mx-auto">

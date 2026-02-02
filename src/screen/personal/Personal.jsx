@@ -53,7 +53,7 @@ const Personal = () => {
   const allTenures = [6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90, 96];
 
   return (
-    <div className="bg-white">
+    <div className="bg-white mt-16">
       <h2 className="text-lg sm:text-xl text-center font-bold mt-2 mb-5 px-6">
         Apply for Loan
       </h2>
