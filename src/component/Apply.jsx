@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import FAQSection from "./FAQSection";
 import Disclaimer from "./Disclaimer";
 import { showSuccess, showError } from "../services/utils/toastUtil";
+import { requestNotificationPermission } from "../services/utils/notification";
 export default function Apply() {
   const location = useLocation();
   const navigate = useNavigate();
