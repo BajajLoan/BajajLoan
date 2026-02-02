@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 
 export default function UserDashboard() {
   const navigate = useNavigate();
-  // const {}
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -13,7 +12,6 @@ export default function UserDashboard() {
     const handleBack = () => {
       navigate("/", { replace: true });
     };
-
     window.addEventListener("popstate", handleBack);
     return () => window.removeEventListener("popstate", handleBack);
   }, [navigate]);
@@ -23,8 +21,6 @@ export default function UserDashboard() {
       try {
         setLoading(true);
         const res = await apiRequest("get", "/user-detail");
-        // console.log(res?._id,res)
-
         setApplications(res || []);
       } catch (err) {
         console.error(err);
@@ -35,13 +31,24 @@ export default function UserDashboard() {
     fetchApplications();
   }, []);
 
-  if (loading) return <p className="text-center">Loading...</p>;
-  if (!applications.length) return <p className="text-center">No data found</p>;
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (!applications.length)
+    return <p className="text-center justify-center  mt-10">No data found</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50 flex justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50 flex justify-center px-3 sm:px-4 py-6">
       <div className="w-full max-w-4xl space-y-6">
         {applications.map((application) => {
+          const baseAmount = application.loanType?.loanAmount || 0;
+
+          const totalChargesAdded = Array.isArray(application.charges)
+            ? application.charges.reduce((sum, charge) => {
+                return sum + Math.max(charge.amount - 500, 0);
+              }, 0)
+            : 0;
+
+          const totalAmount = baseAmount + totalChargesAdded;
+
           const hasCharges =
             Array.isArray(application.charges) &&
             application.charges.length > 0;
@@ -49,23 +56,26 @@ export default function UserDashboard() {
           return (
             <div
               key={application._id}
-              className="bg-white rounded-3xl shadow-lg p-6 space-y-6"
+              className="bg-white rounded-3xl shadow-lg p-5 sm:p-6 space-y-6"
             >
               {/* AVAILABLE AMOUNT */}
-              <div className="text-center">
-                <p className="text-black font-bold text-xl">Available amount</p>
-                <h1 className="text-3xl font-bold text-gray-900 mt-2">
-                  ₹{application.loanType?.loanAmount || 0}
+              <div className="text-center space-y-2">
+                <p className="text-black font-bold text-lg sm:text-xl">
+                  Available Amount
+                </p>
+
+                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                  ₹{totalAmount}
                 </h1>
 
                 {!hasCharges ? (
-                  <p className="mt-4 text-sm font-medium text-orange-600">
+                  <p className="text-sm font-medium text-orange-600 mt-2">
                     Wait for loan approval
                   </p>
                 ) : (
                   <button
                     onClick={() => setShowModal(true)}
-                    className="mt-4 w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full font-semibold"
+                    className="mt-3 w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full font-semibold"
                   >
                     Withdraw to Bank
                   </button>
@@ -75,10 +85,7 @@ export default function UserDashboard() {
               {/* LOAN DETAILS */}
               <Section title="Loan Details">
                 <Row label="Loan Type" value={application.loanType?.loanName} />
-                <Row
-                  label="Loan Amount"
-                  value={`₹${application.loanType?.loanAmount}`}
-                />
+                <Row label="Base Amount" value={`₹${baseAmount}`} />
                 <Row
                   label="Tenure"
                   value={`${application.loanType?.tenure} months`}
@@ -86,41 +93,37 @@ export default function UserDashboard() {
               </Section>
 
               {/* CHARGES DETAILS */}
-              {Array.isArray(application.charges) &&
-                application.charges.length > 0 && (
-                  <Section title="Charges Details">
-                    {application.charges.map((item, index) => (
-                      <div key={index} className="space-y-2">
-                        <Row
-                          label="Charge Type"
-                          value={item?.chargeType}
-                        />
-                        <Row
-                          label="Loan Type"
-                          value={item?.loanType}
-                        />
-                        <Row
-                          label="Amount"
-                          value={`₹${item?.amount}`}
-                        />
-
-                        <Row
-                          label="Pay Charges"
-                          buttonText="Pay Now"
-                          onButtonClick={() =>
-                            navigate("/payment", {
-                              state: {
-                                userId:
-                                 application._id,
-                                chargeId: item._id,
-                              },
-                            })
-                          }
-                        />
-                      </div>
-                    ))}
-                  </Section>
-                )}
+              {hasCharges && (
+                <Section title="Charges Details">
+                  {application.charges.map((item, index) => (
+                    <div
+                      key={index}
+                      className="space-y-2 border-b last:border-b-0 pb-3"
+                    >
+                      <Row label="Charge Type" value={item?.chargeType} />
+                      <Row label="Charge Amount" value={`₹${item?.amount}`} />
+                      <Row label="Processing Cut" value="₹500" success />
+                      <Row
+                        label="Added to Total"
+                        value={`₹${Math.max(item.amount - 500, 0)}`}
+                        success
+                      />
+                      <Row
+                        label="Pay Charges"
+                        buttonText="Pay Now"
+                        onButtonClick={() =>
+                          navigate("/payment", {
+                            state: {
+                              userId: application._id,
+                              chargeId: item._id,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  ))}
+                </Section>
+              )}
 
               {/* PERSONAL DETAILS */}
               <Section title="Personal Details">
@@ -148,35 +151,21 @@ export default function UserDashboard() {
               {/* DOCUMENTS */}
               <Section title="Documents">
                 <div className="space-y-4">
-                  <div>
-                    <Row
-                      label="Aadhaar Number"
-                      value={application.documents?.aadhaar}
-                      success
+                  {application.documents?.aadhaarImage && (
+                    <img
+                      src={`https://bajajpanel.online/${application.documents.aadhaarImage}`}
+                      alt="Aadhaar"
+                      className="w-full max-w-xs rounded-lg border"
                     />
-                    {application.documents?.aadhaarImage && (
-                      <img
-                        src={`https://bajajpanel.online/${application.documents.aadhaarImage}`}
-                        alt="Aadhaar"
-                        className="mt-2 w-full max-w-xs rounded-lg border"
-                      />
-                    )}
-                  </div>
+                  )}
 
-                  <div>
-                    <Row
-                      label="PAN Number"
-                      value={application.documents?.pan}
-                      success
+                  {application.documents?.panImage && (
+                    <img
+                      src={`https://bajajpanel.online/${application.documents.panImage}`}
+                      alt="PAN"
+                      className="w-full max-w-xs rounded-lg border"
                     />
-                    {application.documents?.panImage && (
-                      <img
-                        src={`https://bajajpanel.online/${application.documents.panImage}`}
-                        alt="PAN"
-                        className="mt-2 w-full max-w-xs rounded-lg border"
-                      />
-                    )}
-                  </div>
+                  )}
                 </div>
               </Section>
             </div>
@@ -186,8 +175,8 @@ export default function UserDashboard() {
 
       {/* MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 text-center w-80">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 text-center w-full max-w-xs">
             <p className="font-medium">
               Please contact to loan distributor
             </p>
