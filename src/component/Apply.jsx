@@ -162,7 +162,7 @@ const res =await apiRequest("post","/apply", formData);
 
   /* ================= MAIN FORM ================= */
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100">
+    <div className="min-h-screen mt-12 bg-gradient-to-br from-indigo-50 via-white to-indigo-100">
       {/* FLOATING LOAN SUMMARY */}
       <div className="sticky top-12 z-10 backdrop-blur bg-white/70 border-b">
         <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between gap-2">
