@@ -79,7 +79,6 @@ formData.append("loanName", loanName);
 formData.append("loanAmount",loanAmount);
 formData.append("tenure",tenure);
 formData.append("emi",emi)
-formData.append("email", personal.email);
 
 // PERSONAL
 formData.append("firstName", personal.firstName);
@@ -103,9 +102,6 @@ if (panImage) formData.append("panImage", panImage);
 
 // API
 const res =await apiRequest("post","/apply", formData);
-    await requestNotificationPermission();
-  
-
     showSuccess("Loan Application Submitted Successfully");
     setShowPreview(true);
 
