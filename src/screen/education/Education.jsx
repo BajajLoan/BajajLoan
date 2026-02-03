@@ -204,7 +204,7 @@ const Education = () => {
                 onClick={() =>
     navigate("/apply", {
       state: {
-        loanName: "business",
+        loanName: "Education Loan",
         loanAmount,
         tenure
       }

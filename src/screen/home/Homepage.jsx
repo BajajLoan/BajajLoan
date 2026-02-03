@@ -178,7 +178,7 @@ const Homepage = () => {
                 onClick={() =>
     navigate("/apply", {
       state: {
-        loanName: "home",
+        loanName: "Home Loan",
         loanAmount,
         tenure
       }

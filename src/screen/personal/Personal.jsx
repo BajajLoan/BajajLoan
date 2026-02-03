@@ -146,7 +146,7 @@ const Personal = () => {
               onClick={() =>
                 navigate("/apply", {
                   state: {
-                    loanName: "personal",
+                    loanName: "Personal Loan",
                     loanAmount,
                     tenure,
                     emi

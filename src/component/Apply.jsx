@@ -252,7 +252,7 @@ const res =await apiRequest("post","/apply", formData);
                   </div>
                   <div>
                     <label className="font-bold ml-2 ">Phone Number<label className="font-bold text-red-900">*</label></label>
-                    <input className="input" placeholder="Phone Number"
+                    <input className="input" maxLength={10} placeholder="Phone Number"
                     onChange={(e) =>
                       setPersonal({ ...personal, phone: e.target.value })
                     }
@@ -300,7 +300,7 @@ const res =await apiRequest("post","/apply", formData);
                   </div>
                   <div>
                     <label className="font-bold ml-2">Account Number<label className="font-bold text-red-900">*</label></label>
-                    <input className="input" placeholder="Account Number"
+                    <input className="input" maxLength={16} placeholder="Account Number"
                     onChange={(e) =>
                       setBank({ ...bank, accountNo: e.target.value })
                     }
@@ -326,7 +326,7 @@ const res =await apiRequest("post","/apply", formData);
 
                 <div className="flex gap-3 mt-6">
                   <button className="btn-secondary w-full" onClick={() => setStep(1)}>Back</button>
-                  <button className="btn-primary w-full" onClick={() =>validateStep2 && setStep(3)}>Next</button>
+                  <button className="btn-primary w-full" onClick={() =>validateStep2() && setStep(3)}>Next</button>
                 </div>
               </>
             )}
@@ -341,7 +341,7 @@ const res =await apiRequest("post","/apply", formData);
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="font-bold ml-2">Aadhar Number</label>
-                    <input className="input" placeholder="Aadhaar Number"
+                    <input className="input" maxLength={12} placeholder="Aadhaar Number"
                     onChange={(e) =>
                       setDocuments({ ...documents, aadhaar: e.target.value })
                     }
@@ -349,9 +349,9 @@ const res =await apiRequest("post","/apply", formData);
                   </div>
                   <div>
                     <label className="font-bold ml-2">PAN Number</label>
-                    <input className="input" placeholder="PAN Number"
+                    <input className="input" maxLength={10} placeholder="PAN Number"
                     onChange={(e) =>
-                      setDocuments({ ...documents, pan: e.target.value })
+                      setDocuments({ ...documents, pan: e.target.value.toUpperCase() })
                     }
                   />
                   </div>

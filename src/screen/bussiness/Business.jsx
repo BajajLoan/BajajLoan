@@ -143,7 +143,7 @@ const Business = () => {
               onClick={() =>
                 navigate("/apply", {
                   state: {
-                    loanName: "business",
+                    loanName: "Business Loan",
                     loanAmount,
                     tenure
                   }

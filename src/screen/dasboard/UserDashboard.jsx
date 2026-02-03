@@ -31,6 +31,20 @@ export default function UserDashboard() {
     fetchApplications();
   }, []);
 
+  const maskValue = (value = "", visible = 5) => {
+  if (!value) return "-";
+  const str = value.toString();
+  if (str.length <= visible) return str;
+  return "*".repeat(str.length - visible) + str.slice(-visible);
+};
+const maskEmail = (email = "") => {
+  if (!email.includes("@")) return "-";
+  const [name, domain] = email.split("@");
+  if (name.length <= 3) return `***@${domain}`;
+  return `${name.slice(0, 2)}***@${domain}`;
+};
+
+
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (!applications.length)
     return <p className="text-center justify-center  mt-16">No data found</p>;
@@ -85,7 +99,7 @@ export default function UserDashboard() {
               {/* LOAN DETAILS */}
               <Section title="Loan Details">
                 <Row label="Loan Type" value={application.loanType?.loanName} />
-                <Row label="Base Amount" value={`₹${baseAmount}`} />
+                <Row label="Approved Loan Amount" value={`₹${baseAmount}`} />
                 <Row
                   label="Tenure"
                   value={`${application.loanType?.tenure} months`}
@@ -131,8 +145,8 @@ export default function UserDashboard() {
                   label="Name"
                   value={`${application.personal?.firstName} ${application.personal?.lastName}`}
                 />
-                <Row label="Email" value={application.personal?.email} />
-                <Row label="Mobile" value={application.personal?.phone} />
+                <Row label="Email" value={maskEmail(application.personal?.email)}/>
+                <Row label="Mobile" value={maskValue(application.personal?.phone, 4)} />
               </Section>
 
               {/* BANK DETAILS */}
@@ -143,13 +157,23 @@ export default function UserDashboard() {
                 />
                 <Row
                   label="Account No"
-                  value={application.bank?.accountNumber}
+                  value={maskValue(application.bank?.accountNumber, 5)}
                 />
                 <Row label="IFSC" value={application.bank?.ifsc} />
               </Section>
 
-              {/* DOCUMENTS */}
+              {/* BANK DETAILS */}
               <Section title="Documents">
+                <Row
+                  label="Adhar Number"
+                  value={application.documents?.aadhaar}
+                />
+                <Row
+                  label="Pan Number"
+                  value={maskValue(application.documents?.pan, 4)}
+                />
+                
+              
                 <div className="space-y-4">
                   {application.documents?.aadhaarImage && (
                     <img
