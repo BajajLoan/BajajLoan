@@ -123,9 +123,8 @@ const maskEmail = (email = "") => {
                         success
                       />
                       {
-                        item.approval===1 ?
-                        <Row  label="Pay Charges" value="Payment Done" success />
-                         :
+                        !item.image ?
+                        
                         <Row
                         label="Pay Charges"
                         buttonText="Pay Now"
@@ -137,7 +136,10 @@ const maskEmail = (email = "") => {
                             },
                           })
                         }
-                      />
+                      /> :  item.approval !== 1 
+                         ?
+                        <Row  label="Pay Charges" value="Processing" success />:
+                        <Row  label="Pay Charges" value="Payment Done" success />
                       }
                     </div>
                   ))}
