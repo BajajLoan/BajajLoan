@@ -50,7 +50,7 @@ const UPIPayment = () => {
       formData.append("chargeId",chargeId);
       formData.append("image",image)
       const res = await apiRequest("put","/user/payment",formData)
-      showSuccess("Amount Paid Successfully")
+      showSuccess(res.message||"Amount Paid Successfully")
       navigate("/dashboard")
     }
     catch(error){

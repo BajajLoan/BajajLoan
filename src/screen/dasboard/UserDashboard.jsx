@@ -122,7 +122,11 @@ const maskEmail = (email = "") => {
                         value={`₹${Math.max(item.amount - 500, 0)}`}
                         success
                       />
-                      <Row
+                      {
+                        item.approval===1 ?
+                        <Row  label="Pay Charges" value="Payment Done" success />
+                         :
+                        <Row
                         label="Pay Charges"
                         buttonText="Pay Now"
                         onButtonClick={() =>
@@ -134,6 +138,7 @@ const maskEmail = (email = "") => {
                           })
                         }
                       />
+                      }
                     </div>
                   ))}
                 </Section>
