@@ -115,6 +115,7 @@ const Homepage = () => {
   <input
     type="number"
     value={loanAmount}
+    maxLength={6}
     onChange={handleLoanAmountChange}
     placeholder="Enter amount"
     className="border border-gray-300 px-3 py-2 pl-8 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"

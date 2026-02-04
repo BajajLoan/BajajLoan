@@ -91,7 +91,7 @@ export default function ApplicationsPreview() {
            {Array.isArray(app?.charges) && app?.charges.length > 0 && (
   <div>
     <h3 className="font-semibold text-indigo-600 mb-3">
-      Charges Paid
+      Charges 
     </h3>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

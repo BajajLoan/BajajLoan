@@ -173,6 +173,10 @@ const res =await apiRequest("post","/apply", formData);
               <p className="text-gray-500">Amount</p>
               <p className="font-semibold">₹{loanAmount}</p>
             </div>
+             <div>
+              <p className="text-gray-500">Monthly EMI :</p>
+              <p className="font-semibold">{emi} Months</p>
+            </div>
             <div>
               <p className="text-gray-500">Tenure</p>
               <p className="font-semibold">{tenure} Months</p>
