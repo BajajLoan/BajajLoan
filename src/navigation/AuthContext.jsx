@@ -15,6 +15,7 @@ const isTokenExpired = (token) => {
 export const AuthProvider = ({ children }) => {
   const [showOtp, setShowOtp] = useState(false);
   const [token, setToken] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -38,6 +39,19 @@ export const AuthProvider = ({ children }) => {
       logout();
     }
   };
+ useEffect(() => {
+  const storedToken = localStorage.getItem("token");
+
+  if (storedToken && !isTokenExpired(storedToken)) {
+    setToken(storedToken);
+  } else {
+    localStorage.removeItem("token");
+  }
+
+  setAuthLoading(false);
+}, []);
+
+
 
   // AUTO LOGIN ON REFRESH
   useEffect(() => {
@@ -64,13 +78,14 @@ export const AuthProvider = ({ children }) => {
     const res = await verifyOtpApi(email, otp);
     localStorage.setItem("token", res.token);
     setToken(res.token);
+    sessionStorage.setItem("TOKEN",res.token)
     setAutoLogout(res.token);
     return res;
   };
 
   return (
     <AuthContext.Provider
-      value={{ sendOtp, verifyOtp, token, showOtp, setShowOtp, logout }}
+      value={{ sendOtp, verifyOtp, token, showOtp, setShowOtp, logout ,authLoading }}
     >
       {children}
     </AuthContext.Provider>
