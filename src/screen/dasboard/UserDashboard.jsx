@@ -138,7 +138,7 @@ const maskEmail = (email = "") => {
                         }
                       /> :  item.approval !== 1 
                          ?
-                        <Row  label="Pay Charges" value="Processing" success />:
+                        <Row  label="Pay Charges" value="Processing" warning />:
                         <Row  label="Pay Charges" value="Payment Done" success />
                       }
                     </div>
@@ -237,7 +237,7 @@ function Section({ title, children }) {
 }
 
 /* ROW */
-function Row({ label, value, success, buttonText, onButtonClick }) {
+function Row({ label, value, success,warning, buttonText, onButtonClick }) {
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-gray-500">{label}</span>
@@ -253,7 +253,7 @@ function Row({ label, value, success, buttonText, onButtonClick }) {
         <span
           className={`font-medium ${
             success ? "text-green-600" : "text-gray-800"
-          }`}
+          }${warning ? "text-yellow-600" : ""}`}
         >
           {value || "-"}
         </span>
