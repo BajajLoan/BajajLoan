@@ -72,7 +72,7 @@ const UPIPayment = () => {
           <h2 className="text-lg font-semibold text-gray-800 mb-2">Pay with UPI</h2>
           <div className="flex items-center justify-between border px-4 py-2 rounded-md bg-gray-50">
             <span className="text-base font-medium truncate">
-              {/* {upiData.upiId} */}
+              {paymentData?.upiId}
               </span>
             <CopyToClipboard text={paymentData?.upiId} onCopy={() => setCopied(true)}>
               <button className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">

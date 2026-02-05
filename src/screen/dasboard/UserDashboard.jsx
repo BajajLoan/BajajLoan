@@ -53,15 +53,13 @@ const maskEmail = (email = "") => {
     <div className="min-h-screen mt-12 bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-50 flex justify-center px-3 sm:px-4 py-6">
       <div className="w-full max-w-4xl space-y-6">
         {applications.map((application) => {
-          const baseAmount = application.loanType?.loanAmount || 0;
+         const baseAmount = application.loanType?.loanAmount || 0;
 
-          const totalChargesAdded = Array.isArray(application.charges)
-            ? application.charges.reduce((sum, charge) => {
-                return sum + Math.max(charge.amount - 500, 0);
-              }, 0)
+        const totalRefund = Array.isArray(application.charges)
+           ? application.charges.reduce((sum, charge) => sum + (charge.refund || 0), 0)
             : 0;
 
-          const totalAmount = baseAmount + totalChargesAdded;
+              const totalAmount = baseAmount + totalRefund;
 
           const hasCharges =
             Array.isArray(application.charges) &&
@@ -116,6 +114,7 @@ const maskEmail = (email = "") => {
                     >
                       <Row label="Charge Type" value={item?.chargeType} />
                       <Row label="Charge Amount" value={`₹${item?.amount}`} />
+                      <Row label="Refund Amount" value={`₹${item?.refund}`} />
                       <Row label="Processing Cut" value="₹500" success />
                       <Row
                         label="Added to Total"
