@@ -115,12 +115,12 @@ const maskEmail = (email = "") => {
                       <Row label="Charge Type" value={item?.chargeType} />
                       <Row label="Charge Amount" value={`₹${item?.amount}`} />
                       <Row label="Refund Amount" value={`₹${item?.refund}`} />
-                      <Row label="Processing Cut" value="₹500" success />
-                      <Row
+                      {/* <Row label="Processing Cut" value="₹500" success /> */}
+                      {/* <Row
                         label="Added to Total"
                         value={`₹${Math.max(item.amount - 500, 0)}`}
                         success
-                      />
+                      /> */}
                       {
                         !item.image ?
                         
