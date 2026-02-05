@@ -30,7 +30,8 @@ const validateStep1 = () => {
     !personal.dob ||
     !personal.phone ||
     !personal.email ||
-    !personal.address
+    !personal.address ||
+    !personal.occupation
   ) {
     showError("Please fill all Personal Details");
     return false;
@@ -86,6 +87,7 @@ formData.append("lastName", personal.lastName);
 formData.append("dob", personal.dob);
 formData.append("phone", personal.phone);
 formData.append("address", personal.address);
+formData.append("occupation", personal.occupation);
 
 // BANK
 formData.append("accountHolder", bank.holder);
@@ -271,6 +273,14 @@ const res =await apiRequest("post","/apply", formData);
                     <input className="input" placeholder="Address"
                     onChange={(e) =>
                       setPersonal({ ...personal, address: e.target.value })
+                    }
+                  />
+                  </div>
+                  <div>
+                    <label className="font-bold ml-2 ">Occupation<label className="font-bold text-red-900">*</label></label>
+                    <input className="input" placeholder="Occupation"
+                    onChange={(e) =>
+                      setPersonal({ ...personal, occupation: e.target.value })
                     }
                   />
                   </div>
