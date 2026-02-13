@@ -242,7 +242,7 @@ function Section({ title, children }) {
 }
 
 /* ROW */
-function Row({ label, value, success,warning, buttonText, onButtonClick }) {
+function Row({ label, value, success,warning,dangor, buttonText, onButtonClick }) {
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-gray-500">{label}</span>
