@@ -230,7 +230,7 @@ const res =await apiRequest("post","/apply", formData);
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex">
                   <div>
-                    <label className="font-bold ml-2 ">First Name<label className="font-bold text-red-900">*</label></label>
+                    <label className="font-bold ml-2 ">Full Name <span className="text-gray-400">(As per Adhar)</span><label className="font-bold text-red-900">*</label></label>
                   <input label="Full Name (As per Adhar)" className="input" placeholder="First Name"
                     onChange={(e) =>
                       setPersonal({ ...personal, firstName: e.target.value })
