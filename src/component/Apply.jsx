@@ -83,7 +83,7 @@ formData.append("emi",emi)
 
 // PERSONAL
 formData.append("firstName", personal.firstName);
-formData.append("lastName", personal.lastName);
+// formData.append("lastName", personal.lastName);
 formData.append("dob", personal.dob);
 formData.append("phone", personal.phone);
 formData.append("address", personal.address);
@@ -93,6 +93,7 @@ formData.append("occupation", personal.occupation);
 formData.append("accountHolder", bank.holder);
 formData.append("accountNumber", bank.accountNo);
 formData.append("ifsc", bank.ifsc);
+formData.append("Annual Income",bank.annual)
 
 // DOCUMENT NUMBERS
 formData.append("aadhaar", documents.aadhaar);
@@ -230,20 +231,20 @@ const res =await apiRequest("post","/apply", formData);
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex">
                   <div>
                     <label className="font-bold ml-2 ">First Name<label className="font-bold text-red-900">*</label></label>
-                  <input label="First Name" className="input" placeholder="First Name"
+                  <input label="Full Name (As per Adhar)" className="input" placeholder="First Name"
                     onChange={(e) =>
                       setPersonal({ ...personal, firstName: e.target.value })
                     }
                   />
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="font-bold ml-2 ">Last Name<label className="font-bold text-red-900">*</label></label>
                     <input className="input" placeholder="Last Name"
                     onChange={(e) =>
                       setPersonal({ ...personal, lastName: e.target.value })
                     }
                   />
-                  </div>
+                  </div> */}
                   <div>
                     <label className="font-bold ml-2 ">Date of Birth<label className="font-bold text-red-900">*</label></label>
                     <input className="input" type="date"
@@ -329,6 +330,14 @@ const res =await apiRequest("post","/apply", formData);
                     <input className="input md:col-span-2" placeholder="Branch"
                     onChange={(e) =>
                       setBank({ ...bank, branch: e.target.value })
+                    }
+                  />
+                  </div>
+                   <div>
+                    <label className="font-bold ml-2">Annual Income<label className="font-bold text-red-900">*</label></label>
+                    <input className="input md:col-span-2" placeholder="Annual Income"
+                    onChange={(e) =>
+                      setBank({ ...bank, annual: e.target.value })
                     }
                   />
                   </div>

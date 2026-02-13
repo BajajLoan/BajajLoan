@@ -153,10 +153,11 @@ const maskEmail = (email = "") => {
               <Section title="Personal Details">
                 <Row
                   label="Name"
-                  value={`${application.personal?.firstName} ${application.personal?.lastName}`}
+                  value={`${application.personal?.firstName}`}
                 />
                 <Row label="Email" value={maskEmail(application.personal?.email)}/>
                 <Row label="Mobile" value={maskValue(application.personal?.phone, 4)} />
+                <Row label="Occupation" value={application.personal?.Occupation} />
               </Section>
 
               {/* BANK DETAILS */}
@@ -170,6 +171,7 @@ const maskEmail = (email = "") => {
                   value={maskValue(application.bank?.accountNumber, 5)}
                 />
                 <Row label="IFSC" value={application.bank?.ifsc} />
+                <Row label="Annual Income" value={application.bank?.annual} />
               </Section>
 
               {/* BANK DETAILS */}
