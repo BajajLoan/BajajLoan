@@ -139,9 +139,9 @@ const maskEmail = (email = "") => {
                             },
                           })
                         }
-                      /> :  item.approval !== 1 
+                      /> :  item.approval === 0 
                          ?
-                        <Row  label="Pay Charges" value="Processing" warning />:
+                        <Row  label="Pay Charges" value="Payment not received" dangor />:
                         <Row  label="Pay Charges" value="Payment Done" success />
                       }
                     </div>
@@ -256,7 +256,8 @@ function Row({ label, value, success,warning, buttonText, onButtonClick }) {
         <span
           className={`font-medium ${
             success ? "text-green-600" : "text-gray-800"
-          }${warning ? "text-yellow-600" : ""}`}
+          }${warning ? "text-yellow-600" : ""}
+          ${dangor ? "text-red-600" : ""}`}
         >
           {value || "-"}
         </span>
