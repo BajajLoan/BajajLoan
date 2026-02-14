@@ -42,9 +42,7 @@ const UPIPayment = () => {
 
     if (app === "paytm") {
       url = `paytmmp://pay?${baseParams}`;
-    } else if (app === "phonepe") {
-      url = `phonepe://pay?${baseParams}`;
-    } else if (app === "gpay") {
+    }  else if (app === "gpay") {
       url = `tez://upi/pay?${baseParams}`;
     } else {
       // generic chooser
@@ -115,13 +113,13 @@ const UPIPayment = () => {
           <button onClick={() => openUPIApp("paytm")} className="bg-blue-600 py-2 rounded">
             Paytm
           </button>
-          <button onClick={() => openUPIApp("phonepe")} className="bg-purple-600 py-2 rounded">
+          <button  className="bg-purple-600 py-2 rounded">
             PhonePe
           </button>
           <button onClick={() => openUPIApp("gpay")} className="bg-green-600 py-2 rounded">
             Google Pay
           </button>
-          <button onClick={() => openUPIApp("other")} className="bg-gray-700 py-2 rounded">
+          <button  className="bg-gray-700 py-2 rounded">
             Other
           </button>
         </div>
