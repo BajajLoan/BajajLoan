@@ -121,7 +121,7 @@ const maskEmail = (email = "") => {
                       <Row label="Refund Amount" value={`₹${item?.refund}`} />
                       
                      {
-  !item.image ? (
+  !item.image || item.approval === 0 ? (
     <Row
       label="Pay Charges"
       buttonText="Pay Now"
@@ -130,6 +130,7 @@ const maskEmail = (email = "") => {
           state: {
             userId: application._id,
             chargeId: item._id,
+            amount:item.amount
           },
         })
       }

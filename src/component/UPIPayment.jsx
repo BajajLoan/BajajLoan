@@ -15,55 +15,64 @@ const UPIPayment = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { userId,chargeId} = location.state || {};
- 
+  const { userId, chargeId,amount } = location.state || {};
 
-  useEffect(()=>{
+  useEffect(() => {
     getPaymentDetails();
-  },[]);
+  }, []);
 
-  const getPaymentDetails = async ()=>{
-    try{
-      const response = await apiRequest("get","/payment")
-      setPaymentData(response[0])
-      
-    }catch(error){
-      console.log("Something went wrong!")
+  const getPaymentDetails = async () => {
+    try {
+      const response = await apiRequest("get", "/payment");
+      setPaymentData(response[0]);
+    } catch (error) {
+      console.log("Something went wrong!");
     }
-  }
+  };
+
+  // ✅ UPI App Open Function Added
+  const openUPIApp = () => {
+    if (!paymentData?.upiId) {
+      showError("UPI ID not available");
+      return;
+    }
+
+    
+    const upiUrl = `upi://pay?pa=${paymentData.upiId}&pn=Bajaj%20Finance&am=${amount}&cu=INR`;
+
+    window.location.href = upiUrl;
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
       const reader = new FileReader();
-      // reader.onloadend = () => setImageBase64(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
-  const handlePayment= async ()=>{
-    try{
+  const handlePayment = async () => {
+    try {
       const formData = new FormData();
-      formData.append("applicationId",userId);
-      formData.append("chargeId",chargeId);
-      formData.append("image",image)
-      const res = await apiRequest("put","/user/payment",formData)
-      showSuccess(res.message || "Amount Paid Successfully")
-     
-      navigate("/dashboard")
+      formData.append("applicationId", userId);
+      formData.append("chargeId", chargeId);
+      formData.append("image", image);
+
+      const res = await apiRequest("put", "/user/payment", formData);
+      showSuccess(res.message || "Amount Paid Successfully");
+
+      navigate("/dashboard");
+    } catch (error) {
+      showError(error);
     }
-    catch(error){
-      showError(error)
-    }
-  }
+  };
 
   return (
     <div className="min-h-screen mt-12 bg-gradient-to-br from-white via-blue-50 to-purple-100 px-4 py-6">
       <ToastContainer />
       <div className="max-w-2xl mx-auto bg-white shadow-xl border border-gray-200 rounded-2xl p-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-center text-blue-800 mb-4">
-          {/* Pay ₹{amountToPay} for {lName} */}
-        </h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-center text-blue-800 mb-4"></h1>
 
         {/* UPI ID Section */}
         <div className="mb-6">
@@ -71,7 +80,7 @@ const UPIPayment = () => {
           <div className="flex items-center justify-between border px-4 py-2 rounded-md bg-gray-50">
             <span className="text-base font-medium truncate">
               {paymentData?.upiId}
-              </span>
+            </span>
             <CopyToClipboard text={paymentData?.upiId} onCopy={() => setCopied(true)}>
               <button className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
                 {copied ? "Copied" : "Copy"}
@@ -82,34 +91,43 @@ const UPIPayment = () => {
 
         {/* QR Code Image */}
         <div className="flex justify-center mb-6">
-          <img src={`https://bajajpanel.online/${paymentData?.qrImage}`} alt="QR Code" className="w-52 h-52 border rounded shadow-md" />
+          <img
+            src={`https://bajajpanel.online/${paymentData?.qrImage}`}
+            alt="QR Code"
+            className="w-52 h-52 border rounded shadow-md"
+          />
         </div>
 
-        <h2 className="text-center font-semibold text-gray-700 mb-3">Or choose your UPI app</h2>
+        <h2 className="text-center font-semibold text-gray-700 mb-3">
+          Or choose your UPI app
+        </h2>
+
+        {/* ✅ UPI Buttons Updated */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-white font-medium mb-6">
-          <button className="bg-blue-600 py-2 rounded">Paytm</button>
-          <button className="bg-purple-600 py-2 rounded">PhonePe</button>
-          <button className="bg-green-600 py-2 rounded">Google Pay</button>
-          <button className="bg-gray-700 py-2 rounded">Other</button>
+          <button onClick={openUPIApp} className="bg-blue-600 py-2 rounded">
+            Paytm
+          </button>
+          <button onClick={openUPIApp} className="bg-purple-600 py-2 rounded">
+            PhonePe
+          </button>
+          <button onClick={openUPIApp} className="bg-green-600 py-2 rounded">
+            Google Pay
+          </button>
+          <button onClick={openUPIApp} className="bg-gray-700 py-2 rounded">
+            Other
+          </button>
         </div>
 
         {/* Bank Account Details */}
         <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
-          <h2 className="text-lg font-semibold text-blue-700 mb-2 text-center">Pay with Bank Transfer</h2>
-          <p><strong>Account Holder:</strong>
-           {paymentData?.accountNumber}
-           </p>
-          <p><strong>Account Number:
+          <h2 className="text-lg font-semibold text-blue-700 mb-2 text-center">
+            Pay with Bank Transfer
+          </h2>
+          <p><strong>Account Holder:</strong> {paymentData?.accountNumber}</p>
+          <p><strong>Account Number:</strong> {paymentData?.accountHolder}</p>
+          <p><strong>Bank Name:</strong> {paymentData?.bankName}</p>
+          <p><strong>IFSC Code:</strong> {paymentData?.ifsc}</p>
 
-          </strong>
-           {paymentData?.accountHolder}
-           </p>
-          <p><strong>Bank Name:</strong>
-           {paymentData?.bankName}
-           </p>
-          <p><strong>IFSC Code:</strong>
-           {paymentData?.ifsc}
-           </p>
           <p className="text-red-500 mt-2 text-center text-sm">Facing issues?</p>
           <div className="text-center mt-1">
             <button
@@ -123,11 +141,13 @@ const UPIPayment = () => {
 
         {/* Upload Payment Slip */}
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-2 text-center border-b pb-1">Upload Payment Slip</h3>
+          <h3 className="text-lg font-semibold mb-2 text-center border-b pb-1">
+            Upload Payment Slip
+          </h3>
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={handleFileChange}
             className="w-full text-sm border px-3 py-2 rounded-md bg-white"
           />
         </div>
