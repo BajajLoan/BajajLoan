@@ -267,11 +267,18 @@ function Row({ label, value, success,warning,dangor, buttonText, onButtonClick }
         </button>
       ) : (
         <span
-          className={`font-medium ${
-            success ? "text-green-600" : "text-gray-800"
-          }${warning ? "text-yellow-600" : ""}
-          ${dangor ? "text-red-600" : ""}`}
-        >
+  className={`font-medium ${
+    success
+      ? "text-green-600"
+      : warning
+      ? "text-yellow-600"
+      : dangor
+      ? "text-red-600"
+      : "text-gray-800"
+  }`}
+>
+  
+
           {value || "-"}
         </span>
       )}
