@@ -10,12 +10,11 @@ const UPIPayment = () => {
   const [paymentData, setPaymentData] = useState(null);
   const [copied, setCopied] = useState(false);
   const [image, setImage] = useState(null);
-  const [imageBase64, setImageBase64] = useState("");
   const [popupShown, setPopupShown] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { userId, chargeId,amount } = location.state || {};
+  const { userId, chargeId, amount } = location.state || {};
 
   useEffect(() => {
     getPaymentDetails();
@@ -30,25 +29,36 @@ const UPIPayment = () => {
     }
   };
 
-  // ✅ UPI App Open Function Added
-  const openUPIApp = () => {
+  // ✅ Different UPI Apps Open
+  const openUPIApp = (app) => {
     if (!paymentData?.upiId) {
       showError("UPI ID not available");
       return;
     }
 
-    
-    const upiUrl = `upi://pay?pa=${paymentData.upiId}&pn=Bajaj%20Finance&am=${amount}&cu=INR`;
+    const baseParams = `pa=${paymentData.upiId}&pn=Bajaj%20Finance&am=${amount}&cu=INR`;
 
-    window.location.href = upiUrl;
+    let url = "";
+
+    if (app === "paytm") {
+      url = `paytmmp://pay?${baseParams}`;
+    } else if (app === "phonepe") {
+      url = `phonepe://pay?${baseParams}`;
+    } else if (app === "gpay") {
+      url = `tez://upi/pay?${baseParams}`;
+    } else {
+      // generic chooser
+      url = `upi://pay?${baseParams}`;
+    }
+
+    window.location.href = url;
   };
 
+  // ✅ Faster Image Upload (no base64 conversion)
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
     }
   };
 
@@ -74,7 +84,6 @@ const UPIPayment = () => {
       <div className="max-w-2xl mx-auto bg-white shadow-xl border border-gray-200 rounded-2xl p-6">
         <h1 className="text-2xl md:text-3xl font-bold text-center text-blue-800 mb-4"></h1>
 
-        {/* UPI ID Section */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-2">Pay with UPI</h2>
           <div className="flex items-center justify-between border px-4 py-2 rounded-md bg-gray-50">
@@ -89,7 +98,6 @@ const UPIPayment = () => {
           </div>
         </div>
 
-        {/* QR Code Image */}
         <div className="flex justify-center mb-6">
           <img
             src={`https://bajajpanel.online/${paymentData?.qrImage}`}
@@ -102,23 +110,22 @@ const UPIPayment = () => {
           Or choose your UPI app
         </h2>
 
-        {/* ✅ UPI Buttons Updated */}
+        {/* ✅ Specific App Buttons */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-white font-medium mb-6">
-          <button onClick={openUPIApp} className="bg-blue-600 py-2 rounded">
+          <button onClick={() => openUPIApp("paytm")} className="bg-blue-600 py-2 rounded">
             Paytm
           </button>
-          <button onClick={openUPIApp} className="bg-purple-600 py-2 rounded">
+          <button onClick={() => openUPIApp("phonepe")} className="bg-purple-600 py-2 rounded">
             PhonePe
           </button>
-          <button onClick={openUPIApp} className="bg-green-600 py-2 rounded">
+          <button onClick={() => openUPIApp("gpay")} className="bg-green-600 py-2 rounded">
             Google Pay
           </button>
-          <button onClick={openUPIApp} className="bg-gray-700 py-2 rounded">
+          <button onClick={() => openUPIApp("other")} className="bg-gray-700 py-2 rounded">
             Other
           </button>
         </div>
 
-        {/* Bank Account Details */}
         <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
           <h2 className="text-lg font-semibold text-blue-700 mb-2 text-center">
             Pay with Bank Transfer
@@ -139,7 +146,6 @@ const UPIPayment = () => {
           </div>
         </div>
 
-        {/* Upload Payment Slip */}
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-2 text-center border-b pb-1">
             Upload Payment Slip
