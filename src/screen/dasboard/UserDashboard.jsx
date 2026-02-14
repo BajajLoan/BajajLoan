@@ -137,7 +137,7 @@ const maskEmail = (email = "") => {
   ) : item.approval === undefined || item.approval === null ? (
     <Row
       label="Pay Charges"
-      value="Payment Processing"
+      value="Payment Under Processing"
       warning
     />
   ) : item.approval === 1 ? (
