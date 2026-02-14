@@ -119,31 +119,42 @@ const maskEmail = (email = "") => {
                       <Row label="Charge Type" value={item?.chargeType} />
                       <Row label="Charge Amount" value={`₹${item?.amount}`} />
                       <Row label="Refund Amount" value={`₹${item?.refund}`} />
-                      {/* <Row label="Processing Cut" value="₹500" success /> */}
-                      {/* <Row
-                        label="Added to Total"
-                        value={`₹${Math.max(item.amount - 500, 0)}`}
-                        success
-                      /> */}
-                      {
-                        !item.image ?
-                        
-                        <Row
-                        label="Pay Charges"
-                        buttonText="Pay Now"
-                        onButtonClick={() =>
-                          navigate("/payment", {
-                            state: {
-                              userId: application._id,
-                              chargeId: item._id,
-                            },
-                          })
-                        }
-                      /> :  item.approval === 0 
-                         ?
-                        <Row  label="Pay Charges" value="Payment not received" dangor />:
-                        <Row  label="Pay Charges" value="Payment Done" success />
-                      }
+                      
+                     {
+  !item.image ? (
+    <Row
+      label="Pay Charges"
+      buttonText="Pay Now"
+      onButtonClick={() =>
+        navigate("/payment", {
+          state: {
+            userId: application._id,
+            chargeId: item._id,
+          },
+        })
+      }
+    />
+  ) : item.approval === undefined || item.approval === null ? (
+    <Row
+      label="Pay Charges"
+      value="Payment Processing"
+      dangor
+    />
+  ) : item.approval === 1 ? (
+    <Row
+      label="Pay Charges"
+      value="Payment Successfully"
+      success
+    />
+  ) : (
+    <Row
+      label="Pay Charges"
+      value="Payment Not Received"
+      dangor
+    />
+  )
+}
+
                     </div>
                   ))}
                 </Section>
@@ -157,7 +168,7 @@ const maskEmail = (email = "") => {
                 />
                 <Row label="Email" value={maskEmail(application.personal?.email)}/>
                 <Row label="Mobile" value={maskValue(application.personal?.phone, 4)} />
-                <Row label="Occupation" value={application.personal?.Occupation} />
+                <Row label="Occupation" value={application.personal?.occupation} />
               </Section>
 
               {/* BANK DETAILS */}
