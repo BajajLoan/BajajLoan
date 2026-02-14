@@ -144,7 +144,7 @@ const maskEmail = (email = "") => {
     <Row
       label="Pay Charges"
       value="Payment Successfully"
-      success
+      warning
     />
   ) : (
     <Row
