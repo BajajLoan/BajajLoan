@@ -46,7 +46,7 @@ useEffect(() => {
         `/pending-charges?email=${email}`
       );
 
-      console.log(res)
+      // console.log(res)
       setHasNotification(res.hasPending);
     
     } catch (err) {

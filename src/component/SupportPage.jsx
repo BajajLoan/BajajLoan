@@ -25,7 +25,7 @@ const SupportPage = () => {
   const fetchContact = async ()=>{
     try{
         const response = await apiRequest("get","/contact");
-      console.log(response);
+     
       setPhone(response?.contactNumber);
       setEmail(response?.email);
       setAdminWhatsapp(response?.whatsappNumber)

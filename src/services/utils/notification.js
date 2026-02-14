@@ -14,10 +14,10 @@ const clearOldPushSubscription = async (serviceWorkerRegistration) => {
 
 
 export const requestNotificationPermission = async (serviceWorkerRegistration) => {
-  console.log("Requesting permission...");
+  // console.log("Requesting permission...");
 
   const permission = await Notification.requestPermission();
-  console.log("Permission:", permission);
+  // console.log("Permission:", permission);
 await clearOldPushSubscription(serviceWorkerRegistration);
   if (permission !== "granted") return;
 
@@ -26,7 +26,7 @@ await clearOldPushSubscription(serviceWorkerRegistration);
     serviceWorkerRegistration, // 🔥 MOST IMPORTANT LINE
   });
 
-  console.log("FCM TOKEN:", token);
+  // console.log("FCM TOKEN:", token);
 
   if (!token) {
     console.log("Token not generated");

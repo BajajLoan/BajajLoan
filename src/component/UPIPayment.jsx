@@ -16,9 +16,7 @@ const UPIPayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userId,chargeId} = location.state || {};
-  console.log(userId,chargeId)
-  // const amountToPay = charges || processingFee;
-  // const lName = chargesName || loanName;
+ 
 
   useEffect(()=>{
     getPaymentDetails();
@@ -28,7 +26,7 @@ const UPIPayment = () => {
     try{
       const response = await apiRequest("get","/payment")
       setPaymentData(response[0])
-      console.log(response,"response")
+      
     }catch(error){
       console.log("Something went wrong!")
     }
@@ -51,7 +49,7 @@ const UPIPayment = () => {
       formData.append("image",image)
       const res = await apiRequest("put","/user/payment",formData)
       showSuccess(res.message || "Amount Paid Successfully")
-      console.log(res,"hello")
+     
       navigate("/dashboard")
     }
     catch(error){

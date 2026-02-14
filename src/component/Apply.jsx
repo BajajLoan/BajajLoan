@@ -22,11 +22,10 @@ export default function Apply() {
   const [aadhaarImage, setAadhaarImageFile] = useState(null);
 const [panImage, setPanImageFile] = useState(null);
 
-console.log(aadhaarImage)
+// console.log(aadhaarImage)
 const validateStep1 = () => {
   if (
     !personal.firstName ||
-    !personal.lastName ||
     !personal.dob ||
     !personal.phone ||
     !personal.email ||
@@ -44,7 +43,8 @@ const validateStep2 = () => {
     !bank.holder ||
     !bank.accountNo ||
     !bank.ifsc ||
-    !bank.branch
+    !bank.branch||
+    !bank.annual
   ) {
     showError("Please fill all Bank Details");
     return false;
@@ -56,8 +56,6 @@ const validateStep3 = () => {
   if (
     !documents.aadhaar ||
     !documents.pan 
-    // !aadhaarImage ||
-    // !panImage
   ) {
     showError("Please fill all Document Details");
     return false;
