@@ -144,7 +144,7 @@ const maskEmail = (email = "") => {
   ) : item.approval === 1 ? (
     <Row
       label="Pay Charges"
-      value="Payment Successfully"
+      value="Payment Successfull"
       success
     />
   ) : (
