@@ -138,13 +138,13 @@ const maskEmail = (email = "") => {
     <Row
       label="Pay Charges"
       value="Payment Processing"
-      dangor
+      warning
     />
   ) : item.approval === 1 ? (
     <Row
       label="Pay Charges"
       value="Payment Successfully"
-      warning
+      success
     />
   ) : (
     <Row
