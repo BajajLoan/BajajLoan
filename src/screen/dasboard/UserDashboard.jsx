@@ -104,7 +104,7 @@ const maskEmail = (email = "") => {
                 />
                 <Row
                   label="EMI per month"
-                  value={`${application.loanType?.emi} months`}
+                  value={`₹${application.loanType?.emi} months`}
                 />
               </Section>
 

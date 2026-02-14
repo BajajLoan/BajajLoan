@@ -10,7 +10,7 @@ const UPIPayment = () => {
   const [paymentData, setPaymentData] = useState(null);
   const [copied, setCopied] = useState(false);
   const [image, setImage] = useState(null);
-  const [popupShown, setPopupShown] = useState(false);
+  
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,14 +45,13 @@ const UPIPayment = () => {
     }  else if (app === "gpay") {
       url = `tez://upi/pay?${baseParams}`;
     } else {
-      // generic chooser
       url = `upi://pay?${baseParams}`;
     }
 
     window.location.href = url;
   };
 
-  // ✅ Faster Image Upload (no base64 conversion)
+  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
