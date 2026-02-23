@@ -103,9 +103,9 @@ const maskEmail = (email = "") => {
                   value={`${application.loanType?.tenure} months`}
                 />
                 <Row
-                  label="EMI per month"
-                  value={`₹${application.loanType?.emi} months`}
-                />
+  label="EMI per month"
+  value={`₹${Number(application.loanType?.emi || 0).toFixed(2)} months`}
+/>
               </Section>
 
               {/* CHARGES DETAILS */}
