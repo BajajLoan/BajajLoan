@@ -146,7 +146,8 @@ const Business = () => {
                   state: {
                     loanName: "Business Loan",
                     loanAmount,
-                    tenure
+                     tenure,
+                      emi
                   }
                 })
               }

@@ -207,7 +207,8 @@ const Education = () => {
       state: {
         loanName: "Education Loan",
         loanAmount,
-        tenure
+         tenure,
+                            emi
       }
     })
   }

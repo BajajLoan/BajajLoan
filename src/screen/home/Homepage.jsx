@@ -181,7 +181,8 @@ const Homepage = () => {
       state: {
         loanName: "Home Loan",
         loanAmount,
-        tenure
+         tenure,
+                            emi
       }
     })
   }
