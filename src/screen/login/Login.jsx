@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useAuth } from "../../navigation/AuthContext";
@@ -10,17 +10,28 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
+  const [localShowOtp, setLocalShowOtp] = useState(false); // ✅ added
 
   const otpRef = useRef([]);
   const navigate = useNavigate();
 
   const { sendOtp, verifyOtp, showOtp } = useAuth();
 
+  /* ✅ RESTORE STATE AFTER REFRESH */
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("otpEmail");
+    const savedOtpScreen = localStorage.getItem("otpScreen");
+
+    if (savedEmail && savedOtpScreen === "true") {
+      setEmail(savedEmail);
+      setLocalShowOtp(true);
+    }
+  }, []);
+
   /* ✅ OTP CHANGE (ONLY NUMBER + AUTO FOCUS) */
   const handleOtpChange = (e, i) => {
     const val = e.target.value;
 
-    // only single digit number
     if (!/^[0-9]?$/.test(val)) return;
 
     const newOtp = [...otp];
@@ -53,6 +64,11 @@ export default function Login() {
       setLoading(true);
       const res = await sendOtp(email);
       showSuccess(res.message);
+
+      // ✅ SAVE STATE
+      localStorage.setItem("otpEmail", email);
+      localStorage.setItem("otpScreen", "true");
+      setLocalShowOtp(true);
     } catch {
       showError("Unable to send OTP");
     } finally {
@@ -65,6 +81,11 @@ export default function Login() {
       setLoading(true);
       await verifyOtp(email, otp.join(""));
       showSuccess("Login successful");
+
+      // ✅ CLEAR STORAGE AFTER LOGIN
+      localStorage.removeItem("otpEmail");
+      localStorage.removeItem("otpScreen");
+
       navigate("/", { replace: true });
     } catch {
       showError("Invalid OTP");
@@ -75,12 +96,11 @@ export default function Login() {
 
   return (
     <div className="bajaj-login">
-      {/* LEFT LOGIN CARD */}
       <div className="login-left">
         <div className="login-card">
           <h2>Sign-in to Bajaj Finserv</h2>
 
-          {!showOtp ? (
+          {!localShowOtp ? (
             <>
               <label>Email</label>
               <input
@@ -108,9 +128,9 @@ export default function Login() {
                     onChange={(e) => handleOtpChange(e, i)}
                     onKeyDown={(e) => handleKeyDown(e, i)}
                     maxLength="1"
-                    inputMode="numeric"     /* ✅ numeric keyboard */
-                    pattern="[0-9]*"        /* ✅ force number */
-                    type="text"             /* ❗ keep text to avoid keyboard jump */
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    type="text"
                   />
                 ))}
               </div>
@@ -128,7 +148,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* RIGHT INFO SECTION */}
       <div className="login-right">
         <h1>Welcome!</h1>
         <p>
