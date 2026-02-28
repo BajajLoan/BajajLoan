@@ -10,14 +10,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
-  const [localShowOtp, setLocalShowOtp] = useState(false); // ✅ added
+  const [localShowOtp, setLocalShowOtp] = useState(false);
 
   const otpRef = useRef([]);
   const navigate = useNavigate();
 
-  const { sendOtp, verifyOtp, showOtp } = useAuth();
+  const { sendOtp, verifyOtp } = useAuth();
 
-  /* ✅ RESTORE STATE AFTER REFRESH */
   useEffect(() => {
     const savedEmail = localStorage.getItem("otpEmail");
     const savedOtpScreen = localStorage.getItem("otpScreen");
@@ -28,7 +27,6 @@ export default function Login() {
     }
   }, []);
 
-  /* ✅ OTP CHANGE (ONLY NUMBER + AUTO FOCUS) */
   const handleOtpChange = (e, i) => {
     const val = e.target.value;
 
@@ -43,7 +41,6 @@ export default function Login() {
     }
   };
 
-  /* ✅ BACKSPACE FIX (ONLY CURRENT BOX CLEAR) */
   const handleKeyDown = (e, i) => {
     if (e.key === "Backspace") {
       const newOtp = [...otp];
@@ -65,7 +62,6 @@ export default function Login() {
       const res = await sendOtp(email);
       showSuccess(res.message);
 
-      // ✅ SAVE STATE
       localStorage.setItem("otpEmail", email);
       localStorage.setItem("otpScreen", "true");
       setLocalShowOtp(true);
@@ -82,7 +78,6 @@ export default function Login() {
       await verifyOtp(email, otp.join(""));
       showSuccess("Login successful");
 
-      // ✅ CLEAR STORAGE AFTER LOGIN
       localStorage.removeItem("otpEmail");
       localStorage.removeItem("otpScreen");
 
@@ -92,6 +87,14 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // ✅ NEW FUNCTION (Change Email)
+  const handleChangeEmail = () => {
+    setLocalShowOtp(false);
+    setOtp(["", "", "", "", "", ""]);
+    localStorage.removeItem("otpEmail");
+    localStorage.removeItem("otpScreen");
   };
 
   return (
@@ -138,6 +141,19 @@ export default function Login() {
               <button onClick={handleVerifyOtp} disabled={loading}>
                 {loading ? "VERIFYING..." : "VERIFY OTP"}
               </button>
+
+              {/* ✅ Change Email Option Added */}
+              <p
+                onClick={handleChangeEmail}
+                style={{
+                  marginTop: "10px",
+                  cursor: "pointer",
+                  color: "#007bff",
+                  textDecoration: "underline"
+                }}
+              >
+                Change Email
+              </p>
             </>
           )}
 
