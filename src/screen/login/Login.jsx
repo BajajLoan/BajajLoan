@@ -148,8 +148,9 @@ export default function Login() {
                 style={{
                   marginTop: "10px",
                   cursor: "pointer",
-                  color: "#007bff",
-                  textDecoration: "underline"
+                  color: "#ff6a00",
+                  textDecoration: "none",
+                  textAlign:'center'
                 }}
               >
                 Change Email
