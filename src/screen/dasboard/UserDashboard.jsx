@@ -104,7 +104,10 @@ const maskEmail = (email = "") => {
                 />
                 <Row
   label="EMI per month"
-  value={`₹${Number(application.loanType?.emi || 0).toFixed(2)} months`}
+  value={`₹${Number(application.loanType?.emi || 0).toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })} per month`}
 />
               </Section>
 
